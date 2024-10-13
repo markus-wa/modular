@@ -19,7 +19,6 @@
 
 ## Interesting Modules
 
-- [Power Up! by Synthrotek](https://www.musicstore.com/en_GB/GBP/Synthrotek-Power-Up-/art-SYN0008376-000)
 - [CBV001 by Syntonie](https://syntonie.fr/products/cbv001-circuit-bent-video-enhancer)
 - [CBV002 by Syntonie](https://syntonie.fr/products/cbv002-circuit-bent-video-delay)
 - [Stable by Syntonie](https://syntonie.fr/products/stable)
