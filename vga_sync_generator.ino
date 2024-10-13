@@ -1,4 +1,5 @@
 // compatible with Arduino Nano + Mega
+// courtesy of https://scanlines.xyz/t/tutorials-for-generating-video-sync-signals-with-arduino/104/4
 
 #define LINE_CYCLES 508
 #define HSYNC_CYCLES 60
