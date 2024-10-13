@@ -1,6 +1,6 @@
 // Dimensions
-panel_width = 15.00;    // 3HP
-panel_height = 128.50;  // 3U
+panel_width = 3 * 5.08;    // 3HP
+panel_height = 128.5;  // 3U
 panel_thickness = 2.00;
 
 // Mounting holes
@@ -38,13 +38,13 @@ jack_height = 10;
 toggle_height = 15;
 pot_height = 22.5;
 
-buffer = 1.4;
+buffer = 0.5;
 
 jack2toggle_y = (jack_height + toggle_height) / 2 + buffer;
 jack2jack_y = jack_height + buffer;
 jack2pot_y = (jack_height + pot_height) / 2 + buffer;
 
-jack1_y = 11;
+jack1_y = 15;
 toggle1_y = jack1_y + jack2toggle_y;
 jack2_y = toggle1_y + jack2toggle_y;
 jack3_y = jack2_y + jack2toggle_y;
