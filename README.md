@@ -19,9 +19,11 @@
 
 ## Interesting Modules
 
+- [Power Up! by Synthrotek](https://www.musicstore.com/en_GB/GBP/Synthrotek-Power-Up-/art-SYN0008376-000)
 - [CBV001 by Syntonie](https://syntonie.fr/products/cbv001-circuit-bent-video-enhancer)
 - [CBV002 by Syntonie](https://syntonie.fr/products/cbv002-circuit-bent-video-delay)
 - [Stable by Syntonie](https://syntonie.fr/products/stable)
 - [Entree, Triple Video Distribution Amp, Rampes, Seuils, Solaire, Isohelie, RGB Encoder by Syntonie](https://syntonie.fr/products/rampes-ramp-generator-sync-extractor)
 - [F4DER, AURAL SCAN & more by Video Headroom Systems](https://www.videoheadroom.systems/video-synthesizers/p/f4der)
 - [Video Matrix Mixer & more by Reverse Landfill](https://www.reverselandfill.org/category/eurorack-video/)
+- [A-183-9 USB Power by Doepfer](https://www.thomann.co.uk/doepfer_a_183_9.htm)
