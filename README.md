@@ -22,5 +22,5 @@
 - [CBV002 by Syntonie](https://syntonie.fr/products/cbv002-circuit-bent-video-delay)
 - [Stable by Syntonie](https://syntonie.fr/products/stable)
 - [Entree, Triple Video Distribution Amp, Rampes, Seuils, Solaire, Isohelie, RGB Encoder by Syntonie](https://syntonie.fr/products/rampes-ramp-generator-sync-extractor)
-- [F4DER, AURAL SCAN & More by Video Headroom Systems](https://www.videoheadroom.systems/video-synthesizers/p/f4der)
-- [Preview Screens](https://www.aliexpress.com/item/1005007025683652.html)
+- [F4DER, AURAL SCAN & more by Video Headroom Systems](https://www.videoheadroom.systems/video-synthesizers/p/f4der)
+- [Video Matrix Mixer & more by Reverse Landfill](https://www.reverselandfill.org/category/eurorack-video/)
