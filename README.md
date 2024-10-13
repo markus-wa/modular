@@ -11,6 +11,11 @@
 - [Active Video Splitter by Freedom Enterprise](https://freedomenterprise.pt/Video-Splitter.html)
 - [Gate Switcher by Freedom Enterprise](https://freedomenterprise.pt/Gate-Switcher.html)
 
+## WIP
+
+- 2x DIY VGA Module (Breakout, Sync Generator & DDC EEPROM)
+- DIY Preview Panel w/ 2x LCD
+
 ## Interesting Modules
 
 - [CBV001 by Syntonie](https://syntonie.fr/products/cbv001-circuit-bent-video-enhancer)
