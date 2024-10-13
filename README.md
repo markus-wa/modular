@@ -4,7 +4,8 @@
 
 - Camcorder (Composite + Audio)
 - DIY 4-ch Dirty Mixer
-- LG CRT TV
+- CRT TV
+- Projector + semi-transparent screen
 - [Mainbow by ChromaCauldron](https://www.etsy.com/uk/listing/1005042852/mainbow-analog-video-synth-eurorack?click_key=049a7e0a52eb56feadb9bd390ace38b6d5c35158%3A1005042852&click_sum=421d72d2&ref=shop_home_active_1&crt=1)
 - [MisMatcher Connect Mini by Freedom Enterprise](https://freedomenterprise.pt/mismatcher-connect-mini.html)
 - [Voltage Controlled Fader by Freedom Enterprise](https://freedomenterprise.pt/vcf.html)
