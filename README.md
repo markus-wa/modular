@@ -17,9 +17,10 @@
 - 2x DIY VGA Module (Breakout, Sync Generator & DDC EEPROM)
 - DIY Preview Panel w/ 2x LCD
 
-## Interesting Modules
+## Interesting Products
 
-- [Happy Ending Case by TipTop Audio](https://www.elevatorsound.com/product/tiptop-audio-happy-ending-uk-19quot-rack-eurorack-case-amp-power-kit-black/)
+- [6u 104hp Travel Case](https://www.ebay.co.uk/itm/266688995770?var=0&toolid=10044)
+- [Happy Ending 84hp Case by TipTop Audio](https://www.elevatorsound.com/product/tiptop-audio-happy-ending-uk-19quot-rack-eurorack-case-amp-power-kit-black/)
 - [CBV001 by Syntonie](https://syntonie.fr/products/cbv001-circuit-bent-video-enhancer)
 - [CBV002 by Syntonie](https://syntonie.fr/products/cbv002-circuit-bent-video-delay)
 - [Stable by Syntonie](https://syntonie.fr/products/stable)
