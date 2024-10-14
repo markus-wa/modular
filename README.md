@@ -28,3 +28,4 @@
 - [F4DER, AURAL SCAN & more by Video Headroom Systems](https://www.videoheadroom.systems/video-synthesizers/p/f4der)
 - [Video Matrix Mixer & more by Reverse Landfill](https://www.reverselandfill.org/category/eurorack-video/)
 - [A-183-9 USB Power by Doepfer](https://www.thomann.co.uk/doepfer_a_183_9.htm)
+- [Gliss by Bela](https://bela.io/products/gliss/)
