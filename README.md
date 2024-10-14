@@ -19,6 +19,7 @@
 
 ## Interesting Modules
 
+- [Happy Ending Case by TipTop Audio](https://www.elevatorsound.com/product/tiptop-audio-happy-ending-uk-19quot-rack-eurorack-case-amp-power-kit-black/)
 - [CBV001 by Syntonie](https://syntonie.fr/products/cbv001-circuit-bent-video-enhancer)
 - [CBV002 by Syntonie](https://syntonie.fr/products/cbv002-circuit-bent-video-delay)
 - [Stable by Syntonie](https://syntonie.fr/products/stable)
