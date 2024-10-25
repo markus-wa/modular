@@ -1,3 +1,5 @@
+$fn=16;
+
 // Dimensions
 panel_width = 3 * 5.08; // 3HP
 panel_height = 128.5;   // 3U
@@ -6,13 +8,13 @@ panel_thickness = 2.00;
 // Mounting holes
 mount_offset_y = 3;
 mount_offset_x = 4;
-mounting_hole_diameter = 3.2; // M3
+mounting_hole_diameter = 3 + 0.5; // M3
 
 // Compoonent hole sizes
 jack_hole_diameter = 6; // 3.5mm
 toggle_hole_diameter = 8; // 3.5mm
 vga_conn_height = 16.33 + 1.5;
-vga_conn_width = 7.9 + 0.7;
+vga_conn_width = 7.9 + 2.0;
 vga_height = 30.8;
 vga_screws_distance = 25;
 vga_screwhole_diameter = 2.5 + 0.5;

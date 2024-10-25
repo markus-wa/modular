@@ -1,3 +1,5 @@
+$fn=16;
+
 // Dimensions
 panel_width = 14 * 5.08;    // 14HP
 panel_height = 128.5;  // 3U
