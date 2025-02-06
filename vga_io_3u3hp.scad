@@ -1,13 +1,13 @@
 $fn=16;
 
 // Dimensions
-panel_width = 3 * 5.08; // 3HP
+panel_width = floor(3 * 5.08); // 3HP
 panel_height = 128.5;   // 3U
 panel_thickness = 2.00;
 
 // Mounting holes
 mount_offset_y = 3;
-mount_offset_x = 4;
+mount_offset_x = 7.45;
 mounting_hole_diameter = 3 + 0.5; // M3
 
 // Compoonent hole sizes

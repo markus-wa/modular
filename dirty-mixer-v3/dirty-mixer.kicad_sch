@@ -442,47 +442,46 @@
 				)
 			)
 		)
-		(symbol "Switch:SW_SPDT"
-			(pin_names
-				(offset 0) hide)
+		(symbol "Switch:SW_SP4T_NR01104"
+			(pin_names hide)
 			(exclude_from_sim no)
 			(in_bom yes)
 			(on_board yes)
 			(property "Reference" "SW"
-				(at 0 5.08 0)
+				(at 0 7.62 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
 				)
 			)
-			(property "Value" "SW_SPDT"
-				(at 0 -5.08 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-				)
-			)
-			(property "Footprint" ""
-				(at 0 0 0)
-				(effects
-					(font
-						(size 1.27 1.27)
-					)
-					(hide yes)
-				)
-			)
-			(property "Datasheet" "~"
+			(property "Value" "SW_SP4T_NR01104"
 				(at 0 -7.62 0)
 				(effects
 					(font
 						(size 1.27 1.27)
 					)
+				)
+			)
+			(property "Footprint" "Button_Switch_THT:SW_NKK_NR01"
+				(at 0 -10.16 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
 					(hide yes)
 				)
 			)
-			(property "Description" "Switch, single pole double throw"
+			(property "Datasheet" "https://www.nkkswitches.com/pdf/NR01%20Rotaries.pdf"
+				(at 0 -12.7 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(property "Description" "NKK Switches NR01 Series rotary SP4T switch"
 				(at 0 0 0)
 				(effects
 					(font
@@ -491,7 +490,7 @@
 					(hide yes)
 				)
 			)
-			(property "ki_keywords" "switch single-pole double-throw spdt ON-ON"
+			(property "ki_keywords" "NR01 SP4T Switch"
 				(at 0 0 0)
 				(effects
 					(font
@@ -500,10 +499,31 @@
 					(hide yes)
 				)
 			)
-			(symbol "SW_SPDT_0_1"
+			(property "ki_fp_filters" "SW?NKK?NR01*"
+				(at 0 0 0)
+				(effects
+					(font
+						(size 1.27 1.27)
+					)
+					(hide yes)
+				)
+			)
+			(symbol "SW_SP4T_NR01104_0_1"
 				(circle
-					(center -2.032 0)
-					(radius 0.4572)
+					(center -3.175 0)
+					(radius 0.635)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(arc
+					(start -0.3176 -1.5875)
+					(mid 0.154 0.449)
+					(end -0.9526 2.2225)
 					(stroke
 						(width 0)
 						(type default)
@@ -514,7 +534,115 @@
 				)
 				(polyline
 					(pts
-						(xy -1.651 0.254) (xy 1.651 2.286)
+						(xy -5.08 0) (xy -3.175 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -3.175 0) (xy 0.635 4.445)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -0.3176 -1.5875) (xy -0.3176 -1.5875)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -0.3176 -1.5875) (xy -0.3176 -0.6985)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy -0.3176 -1.5875) (xy 0.4444 -1.0795)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 0.3174 -1.5875) (xy 0.3174 -1.5875)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.08 -2.54) (xy 3.175 -2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.08 0) (xy 3.81 0)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.08 2.54) (xy 3.175 2.54)
+					)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(polyline
+					(pts
+						(xy 5.08 5.08) (xy 2.54 5.08) (xy 2.54 4.445) (xy 1.27 4.445)
 					)
 					(stroke
 						(width 0)
@@ -525,8 +653,8 @@
 					)
 				)
 				(circle
-					(center 2.032 -2.54)
-					(radius 0.4572)
+					(center 0.635 4.445)
+					(radius 0.635)
 					(stroke
 						(width 0)
 						(type default)
@@ -536,8 +664,30 @@
 					)
 				)
 				(circle
-					(center 2.032 2.54)
-					(radius 0.4572)
+					(center 2.54 -2.54)
+					(radius 0.635)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 2.54 2.54)
+					(radius 0.635)
+					(stroke
+						(width 0)
+						(type default)
+					)
+					(fill
+						(type none)
+					)
+				)
+				(circle
+					(center 3.175 0)
+					(radius 0.635)
 					(stroke
 						(width 0)
 						(type default)
@@ -547,10 +697,11 @@
 					)
 				)
 			)
-			(symbol "SW_SPDT_1_1"
-				(rectangle
-					(start -3.175 3.81)
-					(end 3.175 -3.81)
+			(symbol "SW_SP4T_NR01104_1_1"
+				(polyline
+					(pts
+						(xy -5.08 6.35) (xy 5.08 6.35) (xy 5.08 -6.35) (xy -5.08 -6.35) (xy -5.08 6.35) (xy -5.08 6.35)
+					)
 					(stroke
 						(width 0)
 						(type default)
@@ -560,9 +711,9 @@
 					)
 				)
 				(pin passive line
-					(at 5.08 2.54 180)
+					(at 7.62 5.08 180)
 					(length 2.54)
-					(name "A"
+					(name "1"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -578,9 +729,9 @@
 					)
 				)
 				(pin passive line
-					(at -5.08 0 0)
+					(at 7.62 2.54 180)
 					(length 2.54)
-					(name "B"
+					(name "2"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -596,9 +747,9 @@
 					)
 				)
 				(pin passive line
-					(at 5.08 -2.54 180)
+					(at 7.62 0 180)
 					(length 2.54)
-					(name "C"
+					(name "3"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -606,6 +757,78 @@
 						)
 					)
 					(number "3"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at 7.62 -2.54 180)
+					(length 2.54)
+					(name "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "4"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin no_connect line
+					(at 5.08 -5.08 180)
+					(length 0) hide
+					(name ""
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "5"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -7.62 0 0)
+					(length 2.54)
+					(name "Common"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "C"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+				)
+				(pin passive line
+					(at -7.62 -5.08 0)
+					(length 2.54)
+					(name "MP"
+						(effects
+							(font
+								(size 1.27 1.27)
+							)
+						)
+					)
+					(number "MP"
 						(effects
 							(font
 								(size 1.27 1.27)
@@ -712,29 +935,69 @@
 			)
 		)
 	)
-	(no_connect
-		(at 129.54 114.3)
-		(uuid "744b7cc5-4382-4d74-8fc4-25b41c76bd02")
+	(junction
+		(at 135.89 110.49)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "5a869f5a-879a-48d6-8f9e-d3d796d60fe7")
+	)
+	(junction
+		(at 140.97 67.31)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "bfd4bb36-2705-4e67-9664-ee0d006c777d")
+	)
+	(junction
+		(at 138.43 90.17)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "d4a5ec1c-25a3-4085-8bf4-3b4e69437a50")
 	)
 	(no_connect
-		(at 129.54 76.2)
+		(at 143.51 102.87)
+		(uuid "0e573821-3e48-4392-b57a-f790da455f57")
+	)
+	(no_connect
+		(at 158.75 113.03)
+		(uuid "33678792-a45c-4b46-8b47-884ee8873821")
+	)
+	(no_connect
+		(at 158.75 74.93)
+		(uuid "35c7d621-17a8-414a-862f-c2f92de0e830")
+	)
+	(no_connect
+		(at 128.27 69.85)
 		(uuid "8fa9af7e-8d1a-48b4-88ee-4a638cbc49b6")
 	)
 	(no_connect
-		(at 129.54 88.9)
+		(at 128.27 92.71)
 		(uuid "9af0738e-cb24-478b-8777-46e5f5628944")
 	)
 	(no_connect
-		(at 129.54 101.6)
+		(at 143.51 64.77)
+		(uuid "9fd9bc76-be15-4deb-a2d9-822053f7facb")
+	)
+	(no_connect
+		(at 128.27 113.03)
 		(uuid "b4e5a791-418e-4b3b-abb8-d99d8b7b1efb")
 	)
 	(no_connect
-		(at 181.61 95.25)
+		(at 181.61 91.44)
 		(uuid "c5ff3f34-7fb2-4fe1-91e9-82e6f4334149")
 	)
 	(wire
 		(pts
-			(xy 180.34 90.17) (xy 181.61 90.17)
+			(xy 138.43 69.85) (xy 143.51 69.85)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "08ae5b81-3294-4468-b7d1-09f62bc25c06")
+	)
+	(wire
+		(pts
+			(xy 180.34 86.36) (xy 181.61 86.36)
 		)
 		(stroke
 			(width 0)
@@ -744,27 +1007,17 @@
 	)
 	(wire
 		(pts
-			(xy 129.54 111.76) (xy 139.7 111.76)
+			(xy 168.91 107.95) (xy 168.91 92.71)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "10d05fb8-295d-48e3-8e42-bed5a79b7cc7")
+		(uuid "0a0c4a73-8c69-42a8-b834-d7fdf04fb799")
 	)
 	(wire
 		(pts
-			(xy 139.7 82.55) (xy 143.51 82.55)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "18079a10-00e9-44ff-8858-96e7051939f7")
-	)
-	(wire
-		(pts
-			(xy 139.7 86.36) (xy 139.7 82.55)
+			(xy 138.43 90.17) (xy 138.43 107.95)
 		)
 		(stroke
 			(width 0)
@@ -774,7 +1027,17 @@
 	)
 	(wire
 		(pts
-			(xy 153.67 105.41) (xy 163.83 105.41)
+			(xy 168.91 69.85) (xy 168.91 85.09)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "30b8c76a-8118-414d-827e-d564cb9354b3")
+	)
+	(wire
+		(pts
+			(xy 158.75 107.95) (xy 168.91 107.95)
 		)
 		(stroke
 			(width 0)
@@ -784,7 +1047,17 @@
 	)
 	(wire
 		(pts
-			(xy 129.54 86.36) (xy 139.7 86.36)
+			(xy 138.43 107.95) (xy 143.51 107.95)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3b15fef5-bdad-4f36-925b-c4fae44640eb")
+	)
+	(wire
+		(pts
+			(xy 128.27 90.17) (xy 138.43 90.17)
 		)
 		(stroke
 			(width 0)
@@ -794,17 +1067,7 @@
 	)
 	(wire
 		(pts
-			(xy 139.7 111.76) (xy 139.7 107.95)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "447beed1-36d0-4d15-a546-721654d9f3d9")
-	)
-	(wire
-		(pts
-			(xy 129.54 71.12) (xy 130.81 71.12)
+			(xy 128.27 64.77) (xy 129.54 64.77)
 		)
 		(stroke
 			(width 0)
@@ -814,7 +1077,17 @@
 	)
 	(wire
 		(pts
-			(xy 167.64 92.71) (xy 181.61 92.71)
+			(xy 135.89 72.39) (xy 143.51 72.39)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "535003f7-62f6-43bf-bf96-01145121501d")
+	)
+	(wire
+		(pts
+			(xy 172.72 88.9) (xy 181.61 88.9)
 		)
 		(stroke
 			(width 0)
@@ -824,17 +1097,7 @@
 	)
 	(wire
 		(pts
-			(xy 163.83 105.41) (xy 163.83 96.52)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "746be34a-0024-4f92-892d-d004a4d700f4")
-	)
-	(wire
-		(pts
-			(xy 129.54 99.06) (xy 139.7 99.06)
+			(xy 128.27 110.49) (xy 135.89 110.49)
 		)
 		(stroke
 			(width 0)
@@ -844,7 +1107,7 @@
 	)
 	(wire
 		(pts
-			(xy 129.54 83.82) (xy 130.81 83.82)
+			(xy 128.27 87.63) (xy 129.54 87.63)
 		)
 		(stroke
 			(width 0)
@@ -854,17 +1117,27 @@
 	)
 	(wire
 		(pts
-			(xy 139.7 77.47) (xy 143.51 77.47)
+			(xy 135.89 110.49) (xy 135.89 72.39)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "88c3f130-247b-4c9f-a9f2-01a91f072b99")
+		(uuid "86424b51-53f5-4a6f-9737-66d9031efb80")
 	)
 	(wire
 		(pts
-			(xy 153.67 80.01) (xy 163.83 80.01)
+			(xy 140.97 105.41) (xy 143.51 105.41)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "8ac176bc-e602-4bbc-9213-69962eefd292")
+	)
+	(wire
+		(pts
+			(xy 158.75 69.85) (xy 168.91 69.85)
 		)
 		(stroke
 			(width 0)
@@ -874,7 +1147,7 @@
 	)
 	(wire
 		(pts
-			(xy 129.54 96.52) (xy 130.81 96.52)
+			(xy 128.27 107.95) (xy 129.54 107.95)
 		)
 		(stroke
 			(width 0)
@@ -884,37 +1157,17 @@
 	)
 	(wire
 		(pts
-			(xy 163.83 80.01) (xy 163.83 88.9)
+			(xy 138.43 90.17) (xy 138.43 69.85)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "99cfc848-79ce-47a3-b49a-ca96044adf70")
+		(uuid "b5de1f97-b63f-410c-83b2-82ee9711d179")
 	)
 	(wire
 		(pts
-			(xy 139.7 102.87) (xy 143.51 102.87)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "b350474b-a884-47b8-99ab-899c5654e540")
-	)
-	(wire
-		(pts
-			(xy 139.7 99.06) (xy 139.7 102.87)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "bde21347-5316-4cbe-bb1d-41e2b712272d")
-	)
-	(wire
-		(pts
-			(xy 129.54 73.66) (xy 139.7 73.66)
+			(xy 128.27 67.31) (xy 140.97 67.31)
 		)
 		(stroke
 			(width 0)
@@ -924,7 +1177,7 @@
 	)
 	(wire
 		(pts
-			(xy 139.7 73.66) (xy 139.7 77.47)
+			(xy 140.97 67.31) (xy 140.97 105.41)
 		)
 		(stroke
 			(width 0)
@@ -934,27 +1187,27 @@
 	)
 	(wire
 		(pts
-			(xy 129.54 109.22) (xy 130.81 109.22)
+			(xy 140.97 67.31) (xy 143.51 67.31)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "e856ab56-4de3-4d47-863f-0076e3d0a8e0")
+		(uuid "d3882fe2-6f06-4e5d-850e-b38fa95de3f2")
 	)
 	(wire
 		(pts
-			(xy 139.7 107.95) (xy 143.51 107.95)
+			(xy 135.89 110.49) (xy 143.51 110.49)
 		)
 		(stroke
 			(width 0)
 			(type default)
 		)
-		(uuid "fe3d5106-3ca4-46da-aeeb-ae7588be482c")
+		(uuid "dffb4ab4-b645-44bf-8598-7bfd7ea48691")
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 180.34 90.17 270)
+		(at 180.34 86.36 270)
 		(mirror x)
 		(unit 1)
 		(exclude_from_sim no)
@@ -963,7 +1216,7 @@
 		(dnp no)
 		(uuid "04622f32-76ce-460a-b14f-9106d9b34aa4")
 		(property "Reference" "#PWR05"
-			(at 173.99 90.17 0)
+			(at 173.99 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -972,7 +1225,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 176.53 90.1699 90)
+			(at 176.53 86.3599 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -981,7 +1234,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 180.34 90.17 0)
+			(at 180.34 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -990,7 +1243,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 180.34 90.17 0)
+			(at 180.34 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -999,7 +1252,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 180.34 90.17 0)
+			(at 180.34 86.36 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1021,7 +1274,7 @@
 	)
 	(symbol
 		(lib_id "power:GND")
-		(at 130.81 83.82 90)
+		(at 129.54 87.63 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1030,7 +1283,7 @@
 		(fields_autoplaced yes)
 		(uuid "2766d5de-90bd-489b-91f9-96664208d8d3")
 		(property "Reference" "#PWR02"
-			(at 137.16 83.82 0)
+			(at 135.89 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1039,7 +1292,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 134.62 83.8199 90)
+			(at 133.35 87.6299 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1048,7 +1301,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 130.81 83.82 0)
+			(at 129.54 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1057,7 +1310,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 130.81 83.82 0)
+			(at 129.54 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1066,7 +1319,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 130.81 83.82 0)
+			(at 129.54 87.63 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1081,73 +1334,6 @@
 			(project "dirty-mixer"
 				(path "/8cc707ea-820a-4583-85ed-bd91fa0f9d6f"
 					(reference "#PWR02")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:GND")
-		(at 130.81 109.22 90)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "3d36c14b-b67b-4e67-b6ee-a88046049b70")
-		(property "Reference" "#PWR04"
-			(at 137.16 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "GND"
-			(at 134.62 109.2199 90)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify right)
-			)
-		)
-		(property "Footprint" ""
-			(at 130.81 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 130.81 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 130.81 109.22 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "40d1f316-c3cd-498e-b9cf-8f0298431f1b")
-		)
-		(instances
-			(project "dirty-mixer"
-				(path "/8cc707ea-820a-4583-85ed-bd91fa0f9d6f"
-					(reference "#PWR04")
 					(unit 1)
 				)
 			)
@@ -1218,8 +1404,91 @@
 		)
 	)
 	(symbol
+		(lib_id "Switch:SW_SP4T_NR01104")
+		(at 151.13 69.85 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "4c78234d-9c20-445f-9b07-cd031f39353e")
+		(property "Reference" "SW3"
+			(at 151.13 58.42 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SW_SP4T_NR01104"
+			(at 151.13 60.96 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Button_Switch_THT:SW_NKK_NR01"
+			(at 151.13 80.01 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.nkkswitches.com/pdf/NR01%20Rotaries.pdf"
+			(at 151.13 82.55 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "NKK Switches NR01 Series rotary SP4T switch"
+			(at 151.13 69.85 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "ad299db9-88ad-4d7d-8a56-4251321e064d")
+		)
+		(pin "2"
+			(uuid "28f6d661-c216-4484-9428-a27ba57d0276")
+		)
+		(pin "5"
+			(uuid "c9dc5cae-1d74-4448-aea6-085607cbf49b")
+		)
+		(pin "MP"
+			(uuid "7748ab25-50a8-4f32-9b4b-deeae4536eb2")
+		)
+		(pin "C"
+			(uuid "79528c0b-f399-496a-b1e5-a7c6173836ce")
+		)
+		(pin "1"
+			(uuid "48834afd-c8e9-4c21-8e7c-3c1b50c0ed8f")
+		)
+		(pin "4"
+			(uuid "a6ab045f-921d-4273-8080-6c3b59d4cb59")
+		)
+		(instances
+			(project ""
+				(path "/8cc707ea-820a-4583-85ed-bd91fa0f9d6f"
+					(reference "SW3")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector_Audio:AudioJack2_SwitchT")
-		(at 124.46 99.06 0)
+		(at 123.19 110.49 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1228,7 +1497,7 @@
 		(fields_autoplaced yes)
 		(uuid "5b10626b-8e70-40db-b43f-bce6c47171d8")
 		(property "Reference" "J3"
-			(at 123.825 90.17 0)
+			(at 122.555 101.6 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1236,7 +1505,7 @@
 			)
 		)
 		(property "Value" "AudioJack2_SwitchT"
-			(at 123.825 92.71 0)
+			(at 122.555 104.14 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1244,7 +1513,7 @@
 			)
 		)
 		(property "Footprint" "Connector_Audio:Jack_3.5mm_QingPu_WQP-PJ398SM_Vertical_CircularHoles"
-			(at 124.46 99.06 0)
+			(at 123.19 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1253,7 +1522,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 124.46 99.06 0)
+			(at 123.19 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1262,7 +1531,7 @@
 			)
 		)
 		(property "Description" "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)"
-			(at 124.46 99.06 0)
+			(at 123.19 110.49 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1290,7 +1559,7 @@
 	)
 	(symbol
 		(lib_id "Device:R_Potentiometer")
-		(at 163.83 92.71 0)
+		(at 168.91 88.9 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1299,7 +1568,7 @@
 		(fields_autoplaced yes)
 		(uuid "68369c79-ede2-4549-be85-fa82e3f24fd4")
 		(property "Reference" "RV1"
-			(at 161.29 91.4399 0)
+			(at 166.37 87.6299 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1308,7 +1577,7 @@
 			)
 		)
 		(property "Value" "R_Potentiometer"
-			(at 161.29 93.9799 0)
+			(at 166.37 90.1699 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1317,7 +1586,7 @@
 			)
 		)
 		(property "Footprint" "Potentiometer_THT:Potentiometer_Alps_RK09K_Single_Vertical"
-			(at 163.83 92.71 0)
+			(at 168.91 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1326,7 +1595,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 163.83 92.71 0)
+			(at 168.91 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1335,7 +1604,7 @@
 			)
 		)
 		(property "Description" "Potentiometer"
-			(at 163.83 92.71 0)
+			(at 168.91 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1363,7 +1632,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Audio:AudioJack2_SwitchT")
-		(at 124.46 73.66 0)
+		(at 123.19 67.31 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1372,7 +1641,7 @@
 		(fields_autoplaced yes)
 		(uuid "68dca07d-a655-42ca-8381-e0f87afb13d3")
 		(property "Reference" "J1"
-			(at 123.825 64.77 0)
+			(at 122.555 58.42 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1380,7 +1649,7 @@
 			)
 		)
 		(property "Value" "AudioJack2_SwitchT"
-			(at 123.825 67.31 0)
+			(at 122.555 60.96 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1388,7 +1657,7 @@
 			)
 		)
 		(property "Footprint" "Connector_Audio:Jack_3.5mm_QingPu_WQP-PJ398SM_Vertical_CircularHoles"
-			(at 124.46 73.66 0)
+			(at 123.19 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1397,7 +1666,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 124.46 73.66 0)
+			(at 123.19 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1406,7 +1675,7 @@
 			)
 		)
 		(property "Description" "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)"
-			(at 124.46 73.66 0)
+			(at 123.19 67.31 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1434,7 +1703,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Audio:AudioJack2_SwitchT")
-		(at 186.69 92.71 0)
+		(at 186.69 88.9 0)
 		(mirror y)
 		(unit 1)
 		(exclude_from_sim no)
@@ -1443,7 +1712,7 @@
 		(dnp no)
 		(uuid "6b845283-2a97-4701-9709-758a1f71795d")
 		(property "Reference" "J5"
-			(at 187.325 83.82 0)
+			(at 187.325 80.01 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1451,7 +1720,7 @@
 			)
 		)
 		(property "Value" "AudioJack2_SwitchT"
-			(at 187.325 86.36 0)
+			(at 187.325 82.55 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1459,7 +1728,7 @@
 			)
 		)
 		(property "Footprint" "Connector_Audio:Jack_3.5mm_QingPu_WQP-PJ398SM_Vertical_CircularHoles"
-			(at 186.69 92.71 0)
+			(at 186.69 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1468,7 +1737,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 186.69 92.71 0)
+			(at 186.69 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1477,7 +1746,7 @@
 			)
 		)
 		(property "Description" "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)"
-			(at 186.69 92.71 0)
+			(at 186.69 88.9 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1504,79 +1773,8 @@
 		)
 	)
 	(symbol
-		(lib_id "Connector_Audio:AudioJack2_SwitchT")
-		(at 124.46 111.76 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "89cff0c0-ed1e-422c-88d4-7e45b4408f98")
-		(property "Reference" "J4"
-			(at 123.825 102.87 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "AudioJack2_SwitchT"
-			(at 123.825 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Connector_Audio:Jack_3.5mm_QingPu_WQP-PJ398SM_Vertical_CircularHoles"
-			(at 124.46 111.76 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 124.46 111.76 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)"
-			(at 124.46 111.76 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "TN"
-			(uuid "05eff7a5-6137-4305-913d-dce7f596a513")
-		)
-		(pin "S"
-			(uuid "d2dd06bc-1e8f-48ec-8052-d07c5d918cfb")
-		)
-		(pin "T"
-			(uuid "415eaf96-f145-4dfc-a32e-c30b3fcd9060")
-		)
-		(instances
-			(project "dirty-mixer"
-				(path "/8cc707ea-820a-4583-85ed-bd91fa0f9d6f"
-					(reference "J4")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
 		(lib_id "power:GND")
-		(at 130.81 96.52 90)
+		(at 129.54 107.95 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1585,7 +1783,7 @@
 		(fields_autoplaced yes)
 		(uuid "9b024b45-19ef-4469-af56-f377102e1454")
 		(property "Reference" "#PWR03"
-			(at 137.16 96.52 0)
+			(at 135.89 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1594,7 +1792,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 134.62 96.5199 90)
+			(at 133.35 107.9499 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1603,7 +1801,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 130.81 96.52 0)
+			(at 129.54 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1612,7 +1810,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 130.81 96.52 0)
+			(at 129.54 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1621,7 +1819,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 130.81 96.52 0)
+			(at 129.54 107.95 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1642,8 +1840,91 @@
 		)
 	)
 	(symbol
+		(lib_id "Switch:SW_SP4T_NR01104")
+		(at 151.13 107.95 0)
+		(mirror y)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(uuid "aef2e357-bf14-48d4-ac39-81e301c4b1bb")
+		(property "Reference" "SW1"
+			(at 151.13 96.52 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Value" "SW_SP4T_NR01104"
+			(at 151.13 99.06 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" "Button_Switch_THT:SW_NKK_NR01"
+			(at 151.13 118.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "https://www.nkkswitches.com/pdf/NR01%20Rotaries.pdf"
+			(at 151.13 120.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "NKK Switches NR01 Series rotary SP4T switch"
+			(at 151.13 107.95 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "3"
+			(uuid "fdb982d0-a515-4cae-aa27-4c9d71fbab92")
+		)
+		(pin "2"
+			(uuid "fda51ebc-3a85-47f6-ae25-1ce7960b4ead")
+		)
+		(pin "5"
+			(uuid "50aa6f58-52a5-432f-a534-e74b346a21bc")
+		)
+		(pin "MP"
+			(uuid "0e12afb1-e29a-4380-bc9b-9e5960bf2168")
+		)
+		(pin "C"
+			(uuid "a60212ea-ea4e-43bd-8644-7d5b2ff507d0")
+		)
+		(pin "1"
+			(uuid "98d73b25-403b-4ef8-8321-103ea7508eab")
+		)
+		(pin "4"
+			(uuid "85048ad2-dc20-4f06-a8fa-228956be1dbd")
+		)
+		(instances
+			(project "dirty-mixer"
+				(path "/8cc707ea-820a-4583-85ed-bd91fa0f9d6f"
+					(reference "SW1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:GND")
-		(at 130.81 71.12 90)
+		(at 129.54 64.77 90)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1652,7 +1933,7 @@
 		(fields_autoplaced yes)
 		(uuid "bbd50c09-0993-4076-97a2-b9cc3fa0544f")
 		(property "Reference" "#PWR01"
-			(at 137.16 71.12 0)
+			(at 135.89 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1661,7 +1942,7 @@
 			)
 		)
 		(property "Value" "GND"
-			(at 134.62 71.1199 90)
+			(at 133.35 64.7699 90)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1670,7 +1951,7 @@
 			)
 		)
 		(property "Footprint" ""
-			(at 130.81 71.12 0)
+			(at 129.54 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1679,7 +1960,7 @@
 			)
 		)
 		(property "Datasheet" ""
-			(at 130.81 71.12 0)
+			(at 129.54 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1688,7 +1969,7 @@
 			)
 		)
 		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
-			(at 130.81 71.12 0)
+			(at 129.54 64.77 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1710,7 +1991,7 @@
 	)
 	(symbol
 		(lib_id "Connector_Audio:AudioJack2_SwitchT")
-		(at 124.46 86.36 0)
+		(at 123.19 90.17 0)
 		(unit 1)
 		(exclude_from_sim no)
 		(in_bom yes)
@@ -1719,7 +2000,7 @@
 		(fields_autoplaced yes)
 		(uuid "c639cb42-146e-46f4-a814-6708b6a09c9c")
 		(property "Reference" "J2"
-			(at 123.825 77.47 0)
+			(at 122.555 81.28 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1727,7 +2008,7 @@
 			)
 		)
 		(property "Value" "AudioJack2_SwitchT"
-			(at 123.825 80.01 0)
+			(at 122.555 83.82 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1735,7 +2016,7 @@
 			)
 		)
 		(property "Footprint" "Connector_Audio:Jack_3.5mm_QingPu_WQP-PJ398SM_Vertical_CircularHoles"
-			(at 124.46 86.36 0)
+			(at 123.19 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1744,7 +2025,7 @@
 			)
 		)
 		(property "Datasheet" "~"
-			(at 124.46 86.36 0)
+			(at 123.19 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1753,7 +2034,7 @@
 			)
 		)
 		(property "Description" "Audio Jack, 2 Poles (Mono / TS), Switched T Pole (Normalling)"
-			(at 124.46 86.36 0)
+			(at 123.19 90.17 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -1774,76 +2055,6 @@
 			(project "dirty-mixer"
 				(path "/8cc707ea-820a-4583-85ed-bd91fa0f9d6f"
 					(reference "J2")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Switch:SW_SPDT")
-		(at 148.59 105.41 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "c97259dc-e704-45de-b545-4bd05b504405")
-		(property "Reference" "SW2"
-			(at 148.59 114.3 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SW_SPDT"
-			(at 148.59 111.76 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Custom:ANT13SEC_CRS"
-			(at 148.59 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 148.59 97.79 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Switch, single pole double throw"
-			(at 148.59 105.41 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "842b07c2-010b-4ea3-b61e-ba3b5ac97c18")
-		)
-		(pin "3"
-			(uuid "5161f02b-07cb-4a58-aa25-ba8b52ce4a0d")
-		)
-		(pin "2"
-			(uuid "969f680d-da38-476a-b0bc-3602ee085664")
-		)
-		(instances
-			(project "dirty-mixer"
-				(path "/8cc707ea-820a-4583-85ed-bd91fa0f9d6f"
-					(reference "SW2")
 					(unit 1)
 				)
 			)
@@ -1908,76 +2119,6 @@
 			(project ""
 				(path "/8cc707ea-820a-4583-85ed-bd91fa0f9d6f"
 					(reference "H1")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Switch:SW_SPDT")
-		(at 148.59 80.01 180)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(uuid "fdfe23f4-6398-4026-bb29-622875dd25a9")
-		(property "Reference" "SW1"
-			(at 148.59 88.9 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Value" "SW_SPDT"
-			(at 148.59 86.36 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-			)
-		)
-		(property "Footprint" "Custom:ANT13SEC_CRS"
-			(at 148.59 80.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 148.59 72.39 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Switch, single pole double throw"
-			(at 148.59 80.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "72a896cf-a3ec-4a28-b367-0f6660f0f142")
-		)
-		(pin "3"
-			(uuid "c8d0d98a-eb2d-42a9-941b-615147defceb")
-		)
-		(pin "2"
-			(uuid "d7b87999-7348-4d17-b377-41838686751e")
-		)
-		(instances
-			(project ""
-				(path "/8cc707ea-820a-4583-85ed-bd91fa0f9d6f"
-					(reference "SW1")
 					(unit 1)
 				)
 			)

@@ -11,22 +11,22 @@ mount_offset_x = 7.45;
 mounting_hole_diameter = 3.2; // M3
 
 // Compoonent hole sizes
-jack_hole_diameter = 6; // 3.5mm
-toggle_hole_diameter = 7;
-pot_hole_diameter = 8;
+jack_hole_diameter = 7.5; // 3.5mm
+toggle_hole_diameter = 7.5;
+pot_hole_diameter = 7.5;
 
 module jack(y_pos) {
-    translate([panel_width / 2, y_pos, panel_thickness / 2])
+    translate([panel_width - 8.3, y_pos, panel_thickness / 2])
         cylinder(d = jack_hole_diameter, h = panel_thickness + 1, center = true);
 }
 
 module toggle(y_pos) {
-    translate([panel_width / 2, y_pos, panel_thickness / 2])
+    translate([panel_width - 7.35, y_pos, panel_thickness / 2])
         cylinder(d = toggle_hole_diameter, h = panel_thickness + 1, center = true);
 }
 
 module pot(y_pos) {
-    translate([panel_width / 2, y_pos, panel_thickness / 2])
+    translate([panel_width - 7.8, y_pos, panel_thickness / 2])
         cylinder(d = pot_hole_diameter, h = panel_thickness + 1, center = true);
 }
 
@@ -46,14 +46,14 @@ jack2toggle_y = (jack_height + toggle_height) / 2 + buffer;
 jack2jack_y = jack_height + buffer;
 jack2pot_y = (jack_height + pot_height) / 2 + buffer;
 
-jack1_y = 15;
-toggle1_y = jack1_y + jack2toggle_y;
-jack2_y = toggle1_y + jack2toggle_y;
-jack3_y = jack2_y + jack2toggle_y;
-toggle2_y = jack3_y + jack2toggle_y;
-jack4_y = toggle2_y + jack2toggle_y;
-pot1_y = jack4_y + jack2pot_y;
-jack5_y = pot1_y + jack2pot_y;
+jack1_y = 21.3;
+toggle1_y = 32;
+jack2_y = jack1_y + 21.3;
+jack3_y =  jack1_y + 34.5;
+toggle2_y = toggle1_y + 34.5;
+jack4_y =  jack1_y + 55.9;
+pot1_y = 90.4;
+jack5_y =  jack1_y + 86.4;
 
 module panel() {
     difference() {

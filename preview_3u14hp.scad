@@ -1,13 +1,14 @@
 $fn=16;
 
 // Dimensions
-panel_width = 14 * 5.08;    // 14HP
+panel_width = floor(14 * 5.08);    // 14HP
 panel_height = 128.5;  // 3U
 panel_thickness = 2.00;
 
 // Mounting holes
 mount_offset_y = 3;
-mount_offset_x = 4;
+mount_offset_x = 7.45;
+mount_offset2_x = 7.45 + (11 * 5.08);
 mounting_hole_diameter = 3.2; // M3
 
 // Compoonent hole sizes
@@ -50,8 +51,8 @@ module panel() {
         cube([panel_width, panel_height, panel_thickness]);
 
         // Mounting holes
-        mounting_hole(panel_width - mount_offset_x, mount_offset_y);
-        mounting_hole(panel_width - mount_offset_x, panel_height - mount_offset_y);
+        mounting_hole(mount_offset2_x, mount_offset_y);
+        mounting_hole(mount_offset2_x, panel_height - mount_offset_y);
         mounting_hole(mount_offset_x, panel_height - mount_offset_y);
         mounting_hole(mount_offset_x, mount_offset_y);
 
