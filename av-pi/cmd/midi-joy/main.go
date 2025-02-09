@@ -99,6 +99,9 @@ type gamepad struct {
 	rx int32
 	ry int32
 
+	lastHat0XCh uint8
+	lastHat0YCh uint8
+
 	key0     uint8
 	vel0     uint8
 	key1     uint8
@@ -237,7 +240,33 @@ func (g *gamepad) HandleEvent(event *evdev.EventEnvelope) error {
 		evdev.BtnTR2:       16,
 	}[event.Type]
 	if !ok {
-		return nil
+		if event.Type != evdev.AbsoluteHat0Y && event.Type != evdev.AbsoluteHat0X {
+			return nil
+		}
+
+		if event.Type == evdev.AbsoluteHat0Y {
+			if event.Value < 0 {
+				ch = 9
+			} else if event.Value > 0 {
+				ch = 12
+			} else {
+				ch = g.lastHat0YCh
+			}
+
+			g.lastHat0YCh = ch
+		}
+
+		if event.Type == evdev.AbsoluteHat0X {
+			if event.Value < 0 {
+				ch = 10
+			} else if event.Value > 0 {
+				ch = 11
+			} else {
+				ch = g.lastHat0XCh
+			}
+
+			g.lastHat0XCh = ch
+		}
 	}
 
 	const (
