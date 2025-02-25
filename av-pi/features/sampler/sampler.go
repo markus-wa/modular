@@ -1,7 +1,6 @@
-package main
+package sampler
 
 import (
-	"context"
 	"errors"
 	"fmt"
 	"log"
@@ -9,11 +8,12 @@ import (
 	"path"
 	"strings"
 	"time"
-	"unicode"
 
 	vlc "github.com/adrg/libvlc-go/v3"
-	"github.com/eiannone/keyboard"
+	"github.com/kenshaw/evdev"
 	"github.com/vladimirvivien/go4vl/device"
+
+	"github.com/markus-wa/vlc-sampler/features/hud"
 )
 
 type Mode int
@@ -24,7 +24,7 @@ const (
 	ModeMax
 )
 
-type avSampler struct {
+type Sampler struct {
 	listPlayer      *vlc.ListPlayer
 	recorder        *vlc.Player
 	streamMediaList *vlc.MediaList
@@ -35,7 +35,7 @@ type avSampler struct {
 	mode             Mode
 }
 
-func newAVSampler(playlistDir string) (*avSampler, error) {
+func New(playlistDir string) (*Sampler, error) {
 	dir, err := os.ReadDir(playlistDir)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read directory: %w", err)
@@ -123,7 +123,7 @@ func newAVSampler(playlistDir string) (*avSampler, error) {
 		}
 	}
 
-	av := &avSampler{
+	av := &Sampler{
 		listPlayer:      player,
 		recorder:        recorder,
 		playlists:       playlists,
@@ -140,7 +140,7 @@ func newAVSampler(playlistDir string) (*avSampler, error) {
 	return av, nil
 }
 
-func (s *avSampler) Previous() error {
+func (s *Sampler) Previous() error {
 	err := s.listPlayer.PlayPrevious()
 	if err != nil {
 		return fmt.Errorf("failed to play previous media: %w", err)
@@ -149,7 +149,7 @@ func (s *avSampler) Previous() error {
 	return nil
 }
 
-func (s *avSampler) Next() error {
+func (s *Sampler) Next() error {
 	err := s.listPlayer.PlayNext()
 	if err != nil {
 		return fmt.Errorf("failed to play next media: %w", err)
@@ -158,7 +158,7 @@ func (s *avSampler) Next() error {
 	return nil
 }
 
-func (s *avSampler) playPlaylist(i int) error {
+func (s *Sampler) playPlaylist(i int) error {
 	log.Println("starting", s.playlists[i])
 
 	m, err := vlc.NewMediaFromPath(s.playlists[i])
@@ -224,7 +224,7 @@ func (s *avSampler) playPlaylist(i int) error {
 	return nil
 }
 
-func (s *avSampler) PreviousPlaylist() error {
+func (s *Sampler) PreviousPlaylist() error {
 	s.currentListIndex--
 
 	if s.currentListIndex < 0 {
@@ -234,7 +234,7 @@ func (s *avSampler) PreviousPlaylist() error {
 	return s.playPlaylist(s.currentListIndex)
 }
 
-func (s *avSampler) NextPlaylist() error {
+func (s *Sampler) NextPlaylist() error {
 
 	s.currentListIndex++
 
@@ -245,7 +245,7 @@ func (s *avSampler) NextPlaylist() error {
 	return s.playPlaylist(s.currentListIndex)
 }
 
-func (s *avSampler) Close() error {
+func (s *Sampler) Close() error {
 	err := s.listPlayer.Stop()
 	if err != nil {
 		return fmt.Errorf("failed to stop listPlayer: %w", err)
@@ -261,7 +261,7 @@ func (s *avSampler) Close() error {
 
 var errNotImplemented = errors.New("not implemented")
 
-func (s *avSampler) startRecording(target string) error {
+func (s *Sampler) startRecording(target string) error {
 	p, err := s.listPlayer.Player()
 	if err != nil {
 		return fmt.Errorf("failed to get player: %w", err)
@@ -305,7 +305,7 @@ func (s *avSampler) startRecording(target string) error {
 	return nil
 }
 
-func (s *avSampler) stopRecording() error {
+func (s *Sampler) stopRecording() error {
 	err := s.recorder.Stop()
 	if err != nil {
 		return fmt.Errorf("failed to stop recording: %w", err)
@@ -314,7 +314,7 @@ func (s *avSampler) stopRecording() error {
 	return nil
 }
 
-func (s *avSampler) ToggleRecording() error {
+func (s *Sampler) ToggleRecording() error {
 	if s.isRecording {
 		err := s.stopRecording()
 		if err != nil {
@@ -340,7 +340,7 @@ func (s *avSampler) ToggleRecording() error {
 	return nil
 }
 
-func (s *avSampler) TogglePlayPause() error {
+func (s *Sampler) TogglePlayPause() error {
 	if s.listPlayer.IsPlaying() {
 		err := s.listPlayer.Stop()
 		if err != nil {
@@ -356,7 +356,7 @@ func (s *avSampler) TogglePlayPause() error {
 	return nil
 }
 
-func (s *avSampler) ToggleMode() error {
+func (s *Sampler) ToggleMode() error {
 	s.mode++
 
 	if s.mode >= ModeMax {
@@ -390,83 +390,66 @@ func (s *avSampler) ToggleMode() error {
 
 var errTimeout = errors.New("timeout")
 
-func run(ctx context.Context) error {
-	err := os.MkdirAll("/tmp/recs", 0755)
-	if err != nil {
-		return fmt.Errorf("failed to create directory: %w", err)
+type Controller struct {
+	sampler *Sampler
+	hud     *hud.Hud
+
+	playlistModifier bool
+}
+
+func NewController(svc *Sampler, hud *hud.Hud) (*Controller, error) {
+	c := &Controller{
+		sampler: svc,
+		hud:     hud,
 	}
 
-	if err := vlc.Init("--quiet"); err != nil {
-		return fmt.Errorf("failed to initialize libvlc: %w", err)
+	return c, nil
+}
+
+func (c *Controller) HandleEvent(event *evdev.EventEnvelope) error {
+	if fmt.Sprint(event.Type) == "Report" {
+		return nil
 	}
 
-	defer vlc.Release()
+	fmt.Println(event.Type, event.Code, event.Value)
 
-	av, err := newAVSampler("/home/markus/Playlists")
-	if err != nil {
-		return fmt.Errorf("failed to create avSampler: %w", err)
-	}
-
-	defer av.Close()
-
-	keyCh, err := keyboard.GetKeys(1)
-	if err != nil {
-		return fmt.Errorf("failed to get keys: %w", err)
-	}
-
-	defer keyboard.Close()
-
-	for key := range keyCh {
-		r := unicode.ToLower(key.Rune)
-
-		log.Println("key", key.Key, key.Rune, key.Err)
-
-		if key.Key == keyboard.KeyCtrlC || key.Rune == 'q' {
-			break
-		} else if key.Key == keyboard.KeyArrowLeft {
-			err = av.Previous()
+	if event.Type == evdev.BtnSelect && event.Value == 1 {
+		if c.playlistModifier {
+			err := c.sampler.PreviousPlaylist()
 			if err != nil {
-				return fmt.Errorf("failed to play previous media: %w", err)
+				return fmt.Errorf("failed to change MIDI port: %w", err)
 			}
-		} else if key.Key == keyboard.KeyArrowRight {
-			err = av.Next()
+		} else {
+			err := c.sampler.Previous()
 			if err != nil {
-				return fmt.Errorf("failed to play next media: %w", err)
-			}
-		} else if key.Key == keyboard.KeyArrowUp {
-			err = av.PreviousPlaylist()
-			if err != nil {
-				return fmt.Errorf("failed to play previous playlist: %w", err)
-			}
-		} else if key.Key == keyboard.KeyArrowDown {
-			err = av.NextPlaylist()
-			if err != nil {
-				return fmt.Errorf("failed to play next playlist: %w", err)
-			}
-		} else if r == 'p' {
-			err = av.TogglePlayPause()
-			if err != nil {
-				return fmt.Errorf("failed to play media: %w", err)
-			}
-		} else if r == 'r' {
-			err := av.ToggleRecording()
-			if err != nil {
-				return fmt.Errorf("failed to toggle recording: %w", err)
-			}
-		} else if r == 'm' {
-			err := av.ToggleMode()
-			if err != nil {
-				return fmt.Errorf("failed to toggle recording: %w", err)
+				return fmt.Errorf("failed to change MIDI port: %w", err)
 			}
 		}
+	} else if event.Type == evdev.BtnStart && event.Value == 1 {
+		if c.playlistModifier {
+			err := c.sampler.NextPlaylist()
+			if err != nil {
+				return fmt.Errorf("failed to change MIDI port: %w", err)
+			}
+		} else {
+			err := c.sampler.Next()
+			if err != nil {
+				return fmt.Errorf("failed to change MIDI port: %w", err)
+			}
+		}
+	} else if event.Type == evdev.BtnStart && event.Value == 1 {
+		err := c.sampler.TogglePlayPause()
+		if err != nil {
+			return fmt.Errorf("failed to change MIDI port: %w", err)
+		}
+	} else if event.Type == evdev.BtnSelect && event.Value == 1 {
+		err := c.sampler.ToggleRecording()
+		if err != nil {
+			return fmt.Errorf("failed to change MIDI port: %w", err)
+		}
+	} else if event.Type == evdev.BtnZ {
+		c.playlistModifier = event.Value == 1
 	}
 
 	return nil
-}
-
-func main() {
-	err := run(context.Background())
-	if err != nil {
-		log.Fatal(err)
-	}
 }

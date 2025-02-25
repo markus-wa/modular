@@ -12,7 +12,9 @@ import (
 	"github.com/kenshaw/evdev"
 	"gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
 
+	"github.com/markus-wa/vlc-sampler/features/hud"
 	"github.com/markus-wa/vlc-sampler/features/midi"
+	"github.com/markus-wa/vlc-sampler/features/sampler"
 )
 
 type Device struct {
@@ -119,15 +121,30 @@ func run() error {
 		fmt.Printf("MIDI Port %d: %s\n", i, port.String())
 	}
 
+	theHud, err := hud.NewHud()
+	if err != nil {
+		return fmt.Errorf("could not initialize HUD: %w", err)
+	}
+
 	midiSvc, err := midi.NewService(drv)
 	if err != nil {
 		return fmt.Errorf("could not initialize MIDI service: %w", err)
 	}
 	defer midiSvc.Close()
 
-	midiCtl, err := midi.NewController(midiSvc, nil)
+	midiCtl, err := midi.NewController(midiSvc, theHud)
 	if err != nil {
 		return fmt.Errorf("could not initialize MIDI controller: %w", err)
+	}
+
+	smplr, err := sampler.New("/home/markus/Playlists")
+	if err != nil {
+		return fmt.Errorf("could not initialize sampler: %w", err)
+	}
+
+	samplerCtrl, err := sampler.NewController(smplr, theHud)
+	if err != nil {
+		return fmt.Errorf("could not initialize sampler controller: %w", err)
 	}
 
 	f, err := os.Open(dev.Path)
@@ -143,10 +160,31 @@ func run() error {
 
 	ctx := context.Background()
 
+	mode := 0
+
 	for event := range device.Poll(ctx) {
-		err := midiCtl.HandleEvent(event)
-		if err != nil {
-			log.Println("failed to handle event:", err)
+		//log.Println("event:", event)
+
+		theHud.SetText(fmt.Sprintf("event: %v", event))
+
+		if event.Type == evdev.KeyMode || event.Type == evdev.BtnMode {
+			mode++
+
+			continue
+		}
+
+		switch mode % 2 {
+		case 0:
+			err := midiCtl.HandleEvent(event)
+			if err != nil {
+				log.Println("failed to handle event:", err)
+			}
+
+		case 1:
+			err := samplerCtrl.HandleEvent(event)
+			if err != nil {
+				log.Println("failed to handle event:", err)
+			}
 		}
 	}
 
