@@ -145,7 +145,16 @@ type Controller struct {
 	ry int32
 
 	lastHat0XCh uint8
+	lastHat0XOn bool
 	lastHat0YCh uint8
+	lastHat0YOn bool
+
+	upOn    bool
+	leftOn  bool
+	rightOn bool
+	downOn  bool
+	tlOn    bool
+	trOn    bool
 
 	stepSize         uint8
 	midiPortModifier bool
@@ -279,52 +288,107 @@ func (c *Controller) HandleEvent(event *evdev.EventEnvelope) error {
 	// gates
 
 	ch, ok := map[any]uint8{
-		evdev.BtnX:         4,
-		evdev.BtnY:         5,
-		evdev.BtnA:         6,
-		evdev.BtnB:         7,
-		evdev.KeyType(544): 8,
-		evdev.KeyType(546): 9,
-		evdev.KeyType(547): 10,
-		evdev.KeyType(545): 11,
-		evdev.BtnTL:        12,
-		evdev.BtnTR:        13,
-		evdev.BtnTL2:       14,
-		evdev.BtnTR2:       15,
+		evdev.BtnA:   5,
+		evdev.BtnB:   4,
+		evdev.BtnX:   7,
+		evdev.BtnY:   6,
+		evdev.BtnTL2: 14,
+		evdev.BtnTR2: 15,
 	}[event.Type]
+
+	on := event.Value == 1
+
 	if !ok {
-		if event.Type != evdev.AbsoluteHat0Y && event.Type != evdev.AbsoluteHat0X {
-			return nil
+		if event.Type == evdev.KeyType(544) {
+			ch = 8
+			if event.Value == 1 {
+				c.upOn = !c.upOn
+			}
+			on = c.upOn
+		}
+
+		if event.Type == evdev.KeyType(546) {
+			ch = 9
+			if event.Value == 1 {
+				c.leftOn = !c.leftOn
+			}
+			on = c.leftOn
+		}
+
+		if event.Type == evdev.KeyType(547) {
+			ch = 10
+			if event.Value == 1 {
+				c.rightOn = !c.rightOn
+			}
+			on = c.rightOn
+		}
+
+		if event.Type == evdev.KeyType(545) {
+			ch = 11
+			if event.Value == 1 {
+				c.downOn = !c.downOn
+			}
+			on = c.downOn
+		}
+
+		if event.Type == evdev.BtnTL {
+			ch = 12
+			if event.Value == 1 {
+				c.tlOn = !c.tlOn
+			}
+			on = c.tlOn
+		}
+
+		if event.Type == evdev.BtnTR {
+			ch = 13
+			if event.Value == 1 {
+				c.trOn = !c.trOn
+			}
+
+			on = c.trOn
 		}
 
 		if event.Type == evdev.AbsoluteHat0Y {
 			if event.Value < 0 {
-				ch = 8
+				ch =
+					8
+				c.upOn = !c.upOn
+				on = c.upOn
 			} else if event.Value > 0 {
 				ch = 11
+				c.downOn = !c.downOn
+				on = c.downOn
 			} else {
 				ch = c.lastHat0YCh
+				on = c.lastHat0YOn
 			}
 
 			c.lastHat0YCh = ch
+			c.lastHat0YOn = on
 		}
 
 		if event.Type == evdev.AbsoluteHat0X {
 			if event.Value < 0 {
 				ch = 9
+				c.leftOn = !c.leftOn
+				on = c.leftOn
 			} else if event.Value > 0 {
 				ch = 10
+				c.rightOn = !c.rightOn
+				on = c.rightOn
 			} else {
 				ch = c.lastHat0XCh
+				on = c.lastHat0XOn
 			}
 
 			c.lastHat0XCh = ch
+			c.lastHat0XOn = on
 		}
 	}
 
-	err := c.svc.Gate(ch, event.Value != 0)
+	err := c.svc.Gate(ch, on)
 	if err != nil {
-		return fmt.Errorf("failed to send MIDI note: %w", err)
+		re turn fmt.Errorf("failed to send MIDI note: %w", err)
 	}
 
 	return nil
