@@ -36,6 +36,18 @@ type Sampler struct {
 }
 
 func New(playlistDir string) (*Sampler, error) {
+	err := os.MkdirAll("/tmp/recs", 0755)
+	if err != nil {
+		return nil, fmt.Errorf("failed to create directory: %w", err)
+	}
+
+	err = vlc.Init("--quiet")
+	if err != nil {
+		return nil, fmt.Errorf("failed to initialize libvlc: %w", err)
+	}
+
+	defer vlc.Release()
+
 	dir, err := os.ReadDir(playlistDir)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read directory: %w", err)

@@ -3,6 +3,7 @@ package midi
 import (
 	"fmt"
 	"log"
+	"strings"
 	"sync"
 	"time"
 
@@ -26,9 +27,24 @@ func NewService(drv *rtmididrv.Driver) (*Service, error) {
 		drv: drv,
 	}
 
-	err := svc.openMidiPort(0)
+	outs, err := drv.Outs()
 	if err != nil {
-		return nil, fmt.Errorf("failed to open MIDI port 0: %w", err)
+		return nil, fmt.Errorf("could not get MIDI output ports: %v", err)
+	}
+
+	idx := 0
+
+	for i, out := range outs {
+		if strings.Contains(out.String(), "CH345") {
+			idx = i
+
+			break
+		}
+	}
+
+	err = svc.openMidiPort(idx)
+	if err != nil {
+		return nil, fmt.Errorf("failed to open MIDI port %d: %w", idx, err)
 	}
 
 	return svc, nil
@@ -91,7 +107,7 @@ func (s *Service) Send(vel0, vel1, vel2, vel3 uint8) error {
 	for _, m := range msgs {
 		err := s.port.Send(m)
 		if err != nil {
-			return fmt.Errorf("failed to send MIDI note: %w", err)
+			return fmt.Errorf("failed to send MIDI CC: %w", err)
 		}
 	}
 
@@ -388,7 +404,7 @@ func (c *Controller) HandleEvent(event *evdev.EventEnvelope) error {
 
 	err := c.svc.Gate(ch, on)
 	if err != nil {
-		re turn fmt.Errorf("failed to send MIDI note: %w", err)
+		return fmt.Errorf("failed to set MIDI gate %d to %t: %w", ch, on, err)
 	}
 
 	return nil

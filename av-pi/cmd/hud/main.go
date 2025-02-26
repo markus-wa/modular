@@ -12,11 +12,8 @@ import (
 const windowWidth = 1920
 const windowHeight = 1080
 
-func init() {
-	runtime.LockOSThread()
-}
-
 func main() {
+	runtime.LockOSThread()
 
 	if err := glfw.Init(); err != nil {
 		log.Fatalln("failed to initialize glfw:", err)
@@ -60,6 +57,5 @@ func main() {
 
 		window.SwapBuffers()
 		glfw.PollEvents()
-
 	}
 }
