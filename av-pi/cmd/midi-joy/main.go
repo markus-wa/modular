@@ -6,35 +6,25 @@ import (
 	"log"
 	"time"
 
-	"gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
+	"gitlab.com/gomidi/midi/v2"
+	_ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
 
 	"github.com/markus-wa/vlc-sampler/features/input"
-	"github.com/markus-wa/vlc-sampler/features/midi"
+	"github.com/markus-wa/vlc-sampler/features/midictl"
 )
 
 func run() error {
-	drv, err := rtmididrv.New()
-	if err != nil {
-		fmt.Errorf("could not initialize MIDI driver: %w", err)
-	}
-	defer drv.Close()
-
-	outPorts, err := drv.Outs()
-	if err != nil {
-		fmt.Errorf("could not get MIDI output ports: %w", err)
-	}
-
-	for i, port := range outPorts {
+	for i, port := range midi.GetOutPorts() {
 		fmt.Printf("MIDI Port %d: %s\n", i, port.String())
 	}
 
-	midiSvc, err := midi.NewService(drv)
+	midiSvc, err := midictl.NewService()
 	if err != nil {
 		return fmt.Errorf("could not initialize MIDI service: %w", err)
 	}
 	defer midiSvc.Close()
 
-	midiCtl, err := midi.NewController(midiSvc, nil)
+	midiCtl, err := midictl.NewController(midiSvc, nil)
 	if err != nil {
 		return fmt.Errorf("could not initialize MIDI controller: %w", err)
 	}

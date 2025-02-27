@@ -1,8 +1,9 @@
-package midi
+package midictl
 
 import (
 	"fmt"
 	"log"
+	"slices"
 	"strings"
 	"sync"
 	"time"
@@ -10,39 +11,22 @@ import (
 	"github.com/kenshaw/evdev"
 	"gitlab.com/gomidi/midi/v2"
 	"gitlab.com/gomidi/midi/v2/drivers"
-	"gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
-
-	"github.com/markus-wa/vlc-sampler/features/hud"
 )
 
 type Service struct {
-	drv     *rtmididrv.Driver
 	portIdx int
 	port    drivers.Out
 	mu      sync.Mutex
 }
 
-func NewService(drv *rtmididrv.Driver) (*Service, error) {
-	svc := &Service{
-		drv: drv,
-	}
+func NewService() (*Service, error) {
+	svc := &Service{}
 
-	outs, err := drv.Outs()
-	if err != nil {
-		return nil, fmt.Errorf("could not get MIDI output ports: %v", err)
-	}
+	idx := slices.IndexFunc(midi.GetOutPorts(), func(o drivers.Out) bool {
+		return strings.Contains(o.String(), "CH345")
+	})
 
-	idx := 0
-
-	for i, out := range outs {
-		if strings.Contains(out.String(), "CH345") {
-			idx = i
-
-			break
-		}
-	}
-
-	err = svc.openMidiPort(idx)
+	err := svc.openMidiPort(idx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to open MIDI port %d: %w", idx, err)
 	}
@@ -54,10 +38,7 @@ func (s *Service) openMidiPort(i int) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
-	outPorts, err := s.drv.Outs()
-	if err != nil {
-		return fmt.Errorf("could not get MIDI output ports: %v", err)
-	}
+	outPorts := midi.GetOutPorts()
 
 	if len(outPorts) == 0 {
 		return fmt.Errorf("no MIDI output ports available")
@@ -72,7 +53,7 @@ func (s *Service) openMidiPort(i int) error {
 
 	newPort := outPorts[idx]
 
-	err = newPort.Open()
+	err := newPort.Open()
 	if err != nil {
 		return fmt.Errorf("could not open MIDI output port: %v", err)
 	}
@@ -154,6 +135,10 @@ func (s *Service) Close() error {
 	return s.port.Close()
 }
 
+type Hud interface {
+	SetText(text string)
+}
+
 type Controller struct {
 	x  int32
 	y  int32
@@ -176,10 +161,10 @@ type Controller struct {
 	midiPortModifier bool
 
 	svc *Service
-	hud *hud.Hud
+	hud Hud
 }
 
-func NewController(svc *Service, hud *hud.Hud) (*Controller, error) {
+func NewController(svc *Service, hud Hud) (*Controller, error) {
 	c := &Controller{
 		stepSize: 8,
 		svc:      svc,

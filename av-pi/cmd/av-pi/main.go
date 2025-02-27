@@ -10,7 +10,6 @@ import (
 
 	"github.com/markus-wa/vlc-sampler/features/hud"
 	"github.com/markus-wa/vlc-sampler/features/input"
-	"github.com/markus-wa/vlc-sampler/features/midi"
 	"github.com/markus-wa/vlc-sampler/features/sampler"
 )
 
