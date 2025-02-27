@@ -78,11 +78,17 @@ func run() error {
 
 	fmt.Printf("Device Name: %s\n", gamepad.Name())
 
+	modeModifier := false
+
 	for event := range gamepad.Poll(ctx) {
-		if event.Type == evdev.KeyMode || event.Type == evdev.BtnMode {
+		if modeModifier && event.Type == evdev.BtnMode {
 			mode++
 
 			continue
+		}
+
+		if event.Type == evdev.BtnZ {
+			modeModifier = event.Value == 1
 		}
 
 		switch mode % 2 {
