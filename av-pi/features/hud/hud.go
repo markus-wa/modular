@@ -1,6 +1,7 @@
 package hud
 
 import (
+	_ "embed"
 	"log"
 	"runtime"
 
@@ -20,6 +21,9 @@ type Hud struct {
 func (h *Hud) SetText(text string) {
 	h.text = text
 }
+
+//go:embed FiraCode-Regular.ttf
+var firaCodeRegularB []byte
 
 func NewHud() (*Hud, error) {
 	hud := &Hud{}
@@ -58,8 +62,7 @@ func NewHud() (*Hud, error) {
 			log.Panicf("gl.Init: %v", err)
 		}
 
-		//load font (fontfile, font scale, window width, window height
-		font, err := glfont.LoadFont("/usr/share/fonts/TTF/Roboto-Regular.ttf", int32(52), w, h)
+		font, err := glfont.LoadFontBytes(firaCodeRegularB, int32(52), w, h)
 		if err != nil {
 			log.Panicf("glfont.LoadFont: %v", err)
 		}
