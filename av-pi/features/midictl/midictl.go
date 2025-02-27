@@ -159,11 +159,6 @@ type Controller struct {
 	rx int32
 	ry int32
 
-	lastHat0XCh uint8
-	lastHat0XOn bool
-	lastHat0YCh uint8
-	lastHat0YOn bool
-
 	upOn    bool
 	leftOn  bool
 	rightOn bool
@@ -313,60 +308,52 @@ func (c *Controller) HandleEvent(event *evdev.EventEnvelope) error {
 
 	on := event.Value == 1
 
+	// toggles
+
 	if !ok {
+		if event.Value == 0 {
+			return nil
+		}
+
 		if event.Type == evdev.KeyType(544) {
 			ch = 8
-			if event.Value == 1 {
-				c.upOn = !c.upOn
-			}
+			c.upOn = !c.upOn
 			on = c.upOn
 		}
 
 		if event.Type == evdev.KeyType(546) {
 			ch = 9
-			if event.Value == 1 {
-				c.leftOn = !c.leftOn
-			}
+			c.leftOn = !c.leftOn
 			on = c.leftOn
 		}
 
 		if event.Type == evdev.KeyType(547) {
 			ch = 10
-			if event.Value == 1 {
-				c.rightOn = !c.rightOn
-			}
+			c.rightOn = !c.rightOn
 			on = c.rightOn
 		}
 
 		if event.Type == evdev.KeyType(545) {
 			ch = 11
-			if event.Value == 1 {
-				c.downOn = !c.downOn
-			}
+			c.downOn = !c.downOn
 			on = c.downOn
 		}
 
 		if event.Type == evdev.BtnTL {
 			ch = 12
-			if event.Value == 1 {
-				c.tlOn = !c.tlOn
-			}
+			c.tlOn = !c.tlOn
 			on = c.tlOn
 		}
 
 		if event.Type == evdev.BtnTR {
 			ch = 13
-			if event.Value == 1 {
-				c.trOn = !c.trOn
-			}
-
+			c.trOn = !c.trOn
 			on = c.trOn
 		}
 
 		if event.Type == evdev.AbsoluteHat0Y {
 			if event.Value < 0 {
-				ch =
-					8
+				ch = 8
 				c.upOn = !c.upOn
 				on = c.upOn
 			} else if event.Value > 0 {
@@ -374,12 +361,8 @@ func (c *Controller) HandleEvent(event *evdev.EventEnvelope) error {
 				c.downOn = !c.downOn
 				on = c.downOn
 			} else {
-				ch = c.lastHat0YCh
-				on = c.lastHat0YOn
+				panic("unexpected value")
 			}
-
-			c.lastHat0YCh = ch
-			c.lastHat0YOn = on
 		}
 
 		if event.Type == evdev.AbsoluteHat0X {
@@ -392,12 +375,8 @@ func (c *Controller) HandleEvent(event *evdev.EventEnvelope) error {
 				c.rightOn = !c.rightOn
 				on = c.rightOn
 			} else {
-				ch = c.lastHat0XCh
-				on = c.lastHat0XOn
+				panic("unexpected value")
 			}
-
-			c.lastHat0XCh = ch
-			c.lastHat0XOn = on
 		}
 	}
 
