@@ -81,6 +81,10 @@ func run() error {
 	modeModifier := false
 
 	for event := range gamepad.Poll(ctx) {
+		if fmt.Sprint(event.Type) == "Report" {
+			continue
+		}
+
 		fmt.Println(event.Type, event.Code, event.Value)
 
 		if modeModifier && event.Type == evdev.BtnMode {
