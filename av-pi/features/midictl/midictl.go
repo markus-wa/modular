@@ -259,12 +259,6 @@ func (c *Controller) decStepSize() {
 }
 
 func (c *Controller) HandleEvent(event *evdev.EventEnvelope) error {
-	if fmt.Sprint(event.Type) == "Report" {
-		return nil
-	}
-
-	//fmt.Println(event.Type, event.Code, event.Value)
-
 	if event.Type == evdev.AbsoluteX {
 		c.x = event.Value
 	} else if event.Type == evdev.AbsoluteY {
@@ -298,12 +292,14 @@ func (c *Controller) HandleEvent(event *evdev.EventEnvelope) error {
 	// gates
 
 	ch, ok := map[any]uint8{
-		evdev.BtnA:   5,
-		evdev.BtnB:   4,
-		evdev.BtnX:   7,
-		evdev.BtnY:   6,
-		evdev.BtnTL2: 14,
-		evdev.BtnTR2: 15,
+		evdev.BtnA:       5,
+		evdev.BtnB:       4,
+		evdev.BtnX:       7,
+		evdev.BtnY:       6,
+		evdev.BtnTL2:     14,
+		evdev.BtnTR2:     15,
+		evdev.AbsoluteZ:  14, // 8bitdo TL2
+		evdev.AbsoluteRZ: 15, // 8bitdo TR2
 	}[event.Type]
 
 	on := event.Value == 1
@@ -315,43 +311,31 @@ func (c *Controller) HandleEvent(event *evdev.EventEnvelope) error {
 			return nil
 		}
 
-		if event.Type == evdev.KeyType(544) {
+		if event.Type == evdev.KeyType(544) { // JoyCon D-Pad
 			ch = 8
 			c.upOn = !c.upOn
 			on = c.upOn
-		}
-
-		if event.Type == evdev.KeyType(546) {
+		} else if event.Type == evdev.KeyType(546) {
 			ch = 9
 			c.leftOn = !c.leftOn
 			on = c.leftOn
-		}
-
-		if event.Type == evdev.KeyType(547) {
+		} else if event.Type == evdev.KeyType(547) {
 			ch = 10
 			c.rightOn = !c.rightOn
 			on = c.rightOn
-		}
-
-		if event.Type == evdev.KeyType(545) {
+		} else if event.Type == evdev.KeyType(545) {
 			ch = 11
 			c.downOn = !c.downOn
 			on = c.downOn
-		}
-
-		if event.Type == evdev.BtnTL {
+		} else if event.Type == evdev.BtnTL { // triggers
 			ch = 12
 			c.tlOn = !c.tlOn
 			on = c.tlOn
-		}
-
-		if event.Type == evdev.BtnTR {
+		} else if event.Type == evdev.BtnTR {
 			ch = 13
 			c.trOn = !c.trOn
 			on = c.trOn
-		}
-
-		if event.Type == evdev.AbsoluteHat0Y {
+		} else if event.Type == evdev.AbsoluteHat0Y { // Switch Pro D-Pad
 			if event.Value < 0 {
 				ch = 8
 				c.upOn = !c.upOn
@@ -363,9 +347,7 @@ func (c *Controller) HandleEvent(event *evdev.EventEnvelope) error {
 			} else {
 				panic("unexpected value")
 			}
-		}
-
-		if event.Type == evdev.AbsoluteHat0X {
+		} else if event.Type == evdev.AbsoluteHat0X {
 			if event.Value < 0 {
 				ch = 9
 				c.leftOn = !c.leftOn

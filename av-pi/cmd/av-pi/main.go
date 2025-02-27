@@ -93,8 +93,8 @@ func run() error {
 			continue
 		}
 
-		if event.Type == evdev.BtnZ {
-			modeModifier = event.Value == 1
+		if event.Type == evdev.BtnZ || event.Type == evdev.AbsoluteZ {
+			modeModifier = event.Value != 0
 		}
 
 		switch mode % 2 {
