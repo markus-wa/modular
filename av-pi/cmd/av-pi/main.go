@@ -7,9 +7,11 @@ import (
 
 	"github.com/kenshaw/evdev"
 	"gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
+	"go.uber.org/zap"
 
 	"github.com/markus-wa/vlc-sampler/features/hud"
 	"github.com/markus-wa/vlc-sampler/features/input"
+	"github.com/markus-wa/vlc-sampler/features/midictl"
 	"github.com/markus-wa/vlc-sampler/features/sampler"
 )
 
@@ -21,26 +23,26 @@ func run() error {
 
 	drv, err := rtmididrv.New()
 	if err != nil {
-		fmt.Errorf("could not initialize MIDI driver: %w", err)
+		return fmt.Errorf("could not initialize MIDI driver: %w", err)
 	}
 	defer drv.Close()
 
 	outPorts, err := drv.Outs()
 	if err != nil {
-		fmt.Errorf("could not get MIDI output ports: %w", err)
+		return fmt.Errorf("could not get MIDI output ports: %w", err)
 	}
 
 	for i, port := range outPorts {
-		fmt.Printf("MIDI Port %d: %s\n", i, port.String())
+		zap.S().Infow("MIDI Port", "index", i, "name", port.String())
 	}
 
-	midiSvc, err := midi.NewService(drv)
+	midiSvc, err := midictl.NewService()
 	if err != nil {
 		return fmt.Errorf("could not initialize MIDI service: %w", err)
 	}
 	defer midiSvc.Close()
 
-	midiCtl, err := midi.NewController(midiSvc, theHud)
+	midiCtl, err := midictl.NewController(midiSvc, theHud)
 	if err != nil {
 		return fmt.Errorf("could not initialize MIDI controller: %w", err)
 	}
@@ -94,8 +96,17 @@ func run() error {
 }
 
 func main() {
-	err := run()
+	logger, err := zap.NewDevelopment()
 	if err != nil {
-		log.Fatalf("error: %v", err)
+		log.Fatalf("could not initialize logger: %v", err)
+	}
+
+	defer logger.Sync()
+
+	zap.ReplaceGlobals(logger)
+
+	err = run()
+	if err != nil {
+		zap.S().Fatalw("error occurred", err)
 	}
 }

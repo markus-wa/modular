@@ -8,6 +8,7 @@ import (
 
 	"gitlab.com/gomidi/midi/v2"
 	_ "gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
+	"go.uber.org/zap"
 
 	"github.com/markus-wa/vlc-sampler/features/input"
 	"github.com/markus-wa/vlc-sampler/features/midictl"
@@ -15,7 +16,7 @@ import (
 
 func run() error {
 	for i, port := range midi.GetOutPorts() {
-		fmt.Printf("MIDI Port %d: %s\n", i, port.String())
+		zap.S().Infow("MIDI Port", "index", i, "name", port.String())
 	}
 
 	midiSvc, err := midictl.NewService()
@@ -38,7 +39,7 @@ func run() error {
 
 	defer gamepad.Close()
 
-	fmt.Printf("Device Name: %s\n", gamepad.Name())
+	zap.S().Infow("starting", "gamepad", gamepad.Name())
 
 	for event := range gamepad.Poll(ctx) {
 		err := midiCtl.HandleEvent(event)
@@ -51,12 +52,21 @@ func run() error {
 }
 
 func main() {
+	logger, err := zap.NewDevelopment()
+	if err != nil {
+		log.Fatalf("could not initialize logger: %v", err)
+	}
+
+	defer logger.Sync()
+
+	zap.ReplaceGlobals(logger)
+
 	t := time.NewTicker(1 * time.Second)
 
 	for range t.C {
 		err := run()
 		if err != nil {
-			log.Println("error:", err)
+			zap.S().Errorw("run failed", "error", err)
 		}
 	}
 }
