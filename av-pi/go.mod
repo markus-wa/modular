@@ -20,3 +20,5 @@ require (
 	golang.org/x/image v0.3.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect
 )
+
+replace github.com/nullboundary/glfont => github.com/markus-wa/glfont v0.0.0-20250227203211-173e9444cb33
