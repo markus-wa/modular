@@ -14,6 +14,7 @@ import (
 	vlc "github.com/adrg/libvlc-go/v3"
 	"github.com/eiannone/keyboard"
 	"github.com/vladimirvivien/go4vl/device"
+	"go.uber.org/zap"
 )
 
 type Mode int
@@ -376,9 +377,18 @@ func (s *avSampler) ToggleMode() error {
 			return fmt.Errorf("failed to set media list: %w", err)
 		}
 
-		err = s.listPlayer.PlayAtIndex(0)
+		n, err := s.streamMediaList.Count()
 		if err != nil {
-			return fmt.Errorf("failed to play screen media list: %w", err)
+			return fmt.Errorf("failed to get media list count: %w", err)
+		}
+
+		for i := 0; i < n; i++ {
+			err = s.listPlayer.PlayAtIndex(uint(i))
+			if err != nil {
+				continue
+			}
+
+			break
 		}
 
 	default:
@@ -465,8 +475,19 @@ func run(ctx context.Context) error {
 }
 
 func main() {
-	err := run(context.Background())
+	logger, err := zap.NewDevelopment()
 	if err != nil {
-		log.Fatal(err)
+		log.Fatalf("could not initialize logger: %v", err)
+	}
+
+	defer logger.Sync()
+
+	t := time.NewTicker(1 * time.Second)
+
+	for range t.C {
+		err := run(context.Background())
+		if err != nil {
+			zap.S().Errorw("run failed", "error", err)
+		}
 	}
 }

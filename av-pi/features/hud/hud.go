@@ -47,7 +47,7 @@ func NewHud() (*Hud, error) {
 
 		_, _, w, h := glfw.GetPrimaryMonitor().GetWorkarea()
 
-		window, err := glfw.CreateWindow(w, h, "glfontExample", nil, nil)
+		window, err := glfw.CreateWindow(w, h, "HUD", nil, nil)
 		if err != nil {
 			log.Panicf("glfw.CreateWindow: %v", err)
 		}

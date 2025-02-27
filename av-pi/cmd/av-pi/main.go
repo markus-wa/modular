@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"path"
+	"time"
 
 	"github.com/kenshaw/evdev"
 	"gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
@@ -112,8 +113,12 @@ func main() {
 
 	zap.ReplaceGlobals(logger)
 
-	err = run()
-	if err != nil {
-		zap.S().Fatalw("error occurred", err)
+	t := time.NewTicker(1 * time.Second)
+
+	for range t.C {
+		err := run()
+		if err != nil {
+			zap.S().Errorw("run failed", "error", err)
+		}
 	}
 }

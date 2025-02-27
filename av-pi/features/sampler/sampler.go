@@ -395,7 +395,7 @@ func (s *Sampler) ToggleMode() error {
 
 		err = s.listPlayer.PlayAtIndex(0)
 		if err != nil {
-			return fmt.Errorf("failed to play screen media list: %w", err)
+			return fmt.Errorf("failed to play stream media list: %w", err)
 		}
 
 	default:
@@ -466,6 +466,11 @@ func (c *Controller) HandleEvent(event *evdev.EventEnvelope) error {
 		}
 	} else if event.Type == evdev.BtnZ {
 		c.playlistModifier = event.Value == 1
+	} else if event.Type == evdev.BtnMode {
+		err := c.sampler.ToggleMode()
+		if err != nil {
+			return fmt.Errorf("failed to change MIDI port: %w", err)
+		}
 	}
 
 	return nil
