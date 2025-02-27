@@ -17,6 +17,11 @@ type Service struct {
 	portIdx int
 	port    drivers.Out
 	mu      sync.Mutex
+
+	lastVel0 uint8
+	lastVel1 uint8
+	lastVel2 uint8
+	lastVel3 uint8
 }
 
 func NewService() (*Service, error) {
@@ -73,6 +78,10 @@ func (s *Service) openMidiPort(i int) error {
 }
 
 func (s *Service) Send(vel0, vel1, vel2, vel3 uint8) error {
+	if vel0 == s.lastVel0 && vel1 == s.lastVel1 && vel2 == s.lastVel2 && vel3 == s.lastVel3 {
+		return nil
+	}
+
 	var msgs []midi.Message
 
 	log.Println("sending MIDI notes:", vel0, vel1, vel2, vel3)
@@ -91,6 +100,11 @@ func (s *Service) Send(vel0, vel1, vel2, vel3 uint8) error {
 			return fmt.Errorf("failed to send MIDI CC: %w", err)
 		}
 	}
+
+	s.lastVel0 = vel0
+	s.lastVel1 = vel1
+	s.lastVel2 = vel2
+	s.lastVel3 = vel3
 
 	return nil
 }
