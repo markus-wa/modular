@@ -4,6 +4,8 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
+	"path"
 
 	"github.com/kenshaw/evdev"
 	"gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
@@ -47,7 +49,12 @@ func run() error {
 		return fmt.Errorf("could not initialize MIDI controller: %w", err)
 	}
 
-	smplr, err := sampler.New("/home/markus/Playlists")
+	home, err := os.UserHomeDir()
+	if err != nil {
+		return fmt.Errorf("could not get user $HOME dir: %w", err)
+	}
+
+	smplr, err := sampler.New(path.Join(home, "Playlists"))
 	if err != nil {
 		return fmt.Errorf("could not initialize sampler: %w", err)
 	}
