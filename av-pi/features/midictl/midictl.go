@@ -84,7 +84,7 @@ func (s *Service) Send(vel0, vel1, vel2, vel3 uint8) error {
 
 	var msgs []midi.Message
 
-	log.Println("sending MIDI notes:", vel0, vel1, vel2, vel3)
+	log.Println("sending MIDI CCs:", vel0, vel1, vel2, vel3)
 
 	msgs = append(msgs, midi.ControlChange(0, 2, vel0))
 	msgs = append(msgs, midi.ControlChange(1, 2, vel1))
@@ -97,7 +97,7 @@ func (s *Service) Send(vel0, vel1, vel2, vel3 uint8) error {
 	for _, m := range msgs {
 		err := s.port.Send(m)
 		if err != nil {
-			return fmt.Errorf("failed to send MIDI CC: %w", err)
+			return fmt.Errorf("failed to send MIDI CCs: %w", err)
 		}
 	}
 
@@ -399,6 +399,10 @@ func (c *Controller) HandleEvent(event *evdev.EventEnvelope) error {
 			c.lastHat0XCh = ch
 			c.lastHat0XOn = on
 		}
+	}
+
+	if ch == 0 {
+		return nil
 	}
 
 	err := c.svc.Gate(ch, on)
