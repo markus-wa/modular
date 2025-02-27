@@ -27,15 +27,16 @@ func NewHud() (*Hud, error) {
 	go func() {
 		runtime.LockOSThread()
 
-		if err := glfw.Init(); err != nil {
+		err := glfw.Init()
+		if err != nil {
 			log.Fatalln("failed to initialize glfw:", err)
 		}
+
 		defer glfw.Terminate()
 
 		glfw.WindowHint(glfw.Resizable, glfw.False)
 		glfw.WindowHint(glfw.ContextVersionMajor, 3)
-		glfw.WindowHint(glfw.ContextVersionMinor, 3)
-		glfw.WindowHint(glfw.OpenGLProfile, glfw.OpenGLCoreProfile)
+		glfw.WindowHint(glfw.ContextVersionMinor, 1)
 		glfw.WindowHint(glfw.OpenGLForwardCompatible, glfw.True)
 		glfw.WindowHint(glfw.TransparentFramebuffer, glfw.True)
 		glfw.WindowHint(glfw.Floating, glfw.True)
