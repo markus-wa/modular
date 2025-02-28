@@ -29,7 +29,7 @@ type UI interface {
 var uiFlag = flag.String("ui", "cli", "UI to use (cli, hud)")
 
 func run() error {
-	err := vlc.Init("--no-autoscale", "--fullscreen")
+	err := vlc.Init("--no-autoscale")
 	if err != nil {
 		return fmt.Errorf("failed to initialize libvlc: %w", err)
 	}

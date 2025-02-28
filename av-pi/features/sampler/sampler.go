@@ -276,7 +276,7 @@ func (s *Sampler) playStreamList() error {
 			return fmt.Errorf("failed to set scale: %w", err)
 		}
 
-		const full = false
+		const full = true
 
 		if full {
 			err = pl.SetFullScreen(true)
