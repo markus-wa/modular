@@ -153,11 +153,9 @@ func New(playlistDir string) (*Sampler, error) {
 		streamMediaList: streamMediaList,
 	}
 
-	if len(playlists) > 0 {
-		err := av.playPlaylist(0)
-		if err != nil {
-			return nil, fmt.Errorf("failed to play playlist 0: %w", err)
-		}
+	err = av.playStreamList()
+	if err != nil {
+		return nil, fmt.Errorf("failed to play stream list: %w", err)
 	}
 
 	return av, nil
@@ -176,6 +174,31 @@ func (s *Sampler) Next() error {
 	err := s.listPlayer.PlayNext()
 	if err != nil {
 		return fmt.Errorf("failed to play next media: %w", err)
+	}
+
+	return nil
+}
+
+func (s *Sampler) playStreamList() error {
+	err := s.listPlayer.SetMediaList(s.streamMediaList)
+	if err != nil {
+		return fmt.Errorf("failed to set media list: %w", err)
+	}
+
+	n, err := s.streamMediaList.Count()
+	if err != nil {
+		return fmt.Errorf("failed to get media list count: %w", err)
+	}
+
+	for i := 0; i < n; i++ {
+		err = s.listPlayer.PlayAtIndex(uint(i))
+		if err != nil {
+			zap.S().Errorw("failed to play media", "index", i, err)
+
+			continue
+		}
+
+		break
 	}
 
 	return nil
@@ -392,25 +415,9 @@ func (s *Sampler) ToggleMode() error {
 
 	switch s.mode {
 	case ModeScreen:
-		err := s.listPlayer.SetMediaList(s.streamMediaList)
+		err := s.playStreamList()
 		if err != nil {
-			return fmt.Errorf("failed to set media list: %w", err)
-		}
-
-		n, err := s.streamMediaList.Count()
-		if err != nil {
-			return fmt.Errorf("failed to get media list count: %w", err)
-		}
-
-		for i := 0; i < n; i++ {
-			err = s.listPlayer.PlayAtIndex(uint(i))
-			if err != nil {
-				zap.S().Errorw("failed to play media", "index", i, err)
-
-				continue
-			}
-
-			break
+			return fmt.Errorf("failed to play stream list: %w", err)
 		}
 
 	case ModePlaylists:
