@@ -149,8 +149,8 @@ func (s *Service) Close() error {
 	return s.port.Close()
 }
 
-type Hud interface {
-	SetText(text string)
+type UI interface {
+	SendText(text string)
 }
 
 type Controller struct {
@@ -170,14 +170,14 @@ type Controller struct {
 	midiPortModifier bool
 
 	svc *Service
-	hud Hud
+	ui  UI
 }
 
-func NewController(svc *Service, hud Hud) (*Controller, error) {
+func NewController(svc *Service, ui UI) (*Controller, error) {
 	c := &Controller{
 		stepSize: 8,
 		svc:      svc,
-		hud:      hud,
+		ui:       ui,
 	}
 
 	go c.loop()

@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"time"
 
 	"github.com/markus-wa/vlc-sampler/features/hud"
 )
@@ -12,7 +13,11 @@ func main() {
 		log.Fatalln("failed to initialize glfw:", err)
 	}
 
-	h.SetText("Hello, World!")
+	go h.Start()
+
+	for range time.Tick(time.Second) {
+		h.SendText("Hello, World!")
+	}
 
 	<-make(chan struct{})
 }

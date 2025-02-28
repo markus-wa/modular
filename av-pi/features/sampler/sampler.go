@@ -13,8 +13,6 @@ import (
 	"github.com/kenshaw/evdev"
 	"github.com/vladimirvivien/go4vl/device"
 	"go.uber.org/zap"
-
-	"github.com/markus-wa/vlc-sampler/features/hud"
 )
 
 type Mode int
@@ -47,13 +45,6 @@ func New(playlistDir string) (*Sampler, error) {
 		return nil, fmt.Errorf("failed to create directory: %w", err)
 	}
 
-	err = vlc.Init("--quiet")
-	if err != nil {
-		return nil, fmt.Errorf("failed to initialize libvlc: %w", err)
-	}
-
-	defer vlc.Release()
-
 	dir, err := os.ReadDir(playlistDir)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read directory: %w", err)
@@ -73,9 +64,14 @@ func New(playlistDir string) (*Sampler, error) {
 		playlists = append(playlists, path.Join(playlistDir, entry.Name()))
 	}
 
-	player, err := vlc.NewListPlayer()
+	listPlayer, err := vlc.NewListPlayer()
 	if err != nil {
 		return nil, fmt.Errorf("failed to create listPlayer: %w", err)
+	}
+
+	err = listPlayer.SetPlaybackMode(vlc.Loop)
+	if err != nil {
+		return nil, fmt.Errorf("failed to set playback mode: %w", err)
 	}
 
 	recorder, err := vlc.NewPlayer()
@@ -90,7 +86,7 @@ func New(playlistDir string) (*Sampler, error) {
 		return nil, fmt.Errorf("failed to get media from screen: %w", err)
 	}
 
-	err = screenMedia.AddOptions(":sout=#transcode{vcodec=mpeg4,acodec=mpga}:display", ":sout-keep")
+	err = screenMedia.AddOptions(":live-caching=50")
 	if err != nil {
 		return nil, fmt.Errorf("failed to add options: %w", err)
 	}
@@ -105,10 +101,14 @@ func New(playlistDir string) (*Sampler, error) {
 		return nil, fmt.Errorf("failed to add media to list: %w", err)
 	}
 
+	zap.S().Infow("added stream screen", "index", 0)
+
 	devs, err := os.ReadDir("/dev")
 	if err != nil {
 		return nil, fmt.Errorf("failed to read directory: %w", err)
 	}
+
+	i := 1
 
 	for _, dev := range devs {
 		if !strings.HasPrefix(dev.Name(), "video") {
@@ -119,7 +119,7 @@ func New(playlistDir string) (*Sampler, error) {
 
 		dev, err := device.Open(path, device.WithBufferSize(1))
 		if err != nil {
-			log.Printf("failed to open device %q: %v\n", path, err)
+			zap.S().Errorw("failed to open device", "path", path, err)
 
 			continue
 		}
@@ -130,12 +130,14 @@ func New(playlistDir string) (*Sampler, error) {
 			continue // not a video capture device
 		}
 
-		devMedia, err := vlc.NewMediaFromURL("v4l2://" + path)
+		url := "v4l2://" + path
+
+		devMedia, err := vlc.NewMediaFromURL(url)
 		if err != nil {
 			return nil, fmt.Errorf("failed to get media from screen: %w", err)
 		}
 
-		err = devMedia.AddOptions(":v4l2-fps=30", ":v4l2-width=640", ":v4l2-height=480", ":live-caching=40", ":sout=#transcode{vcodec=mpeg4,acodec=mpga}:display", ":sout-keep")
+		err = devMedia.AddOptions(":live-caching=50")
 		if err != nil {
 			return nil, fmt.Errorf("failed to add options: %w", err)
 		}
@@ -144,10 +146,14 @@ func New(playlistDir string) (*Sampler, error) {
 		if err != nil {
 			return nil, fmt.Errorf("failed to add media to list: %w", err)
 		}
+
+		zap.S().Infow("added stream device", "path", path, "url", url, "index", i)
+
+		i++
 	}
 
 	av := &Sampler{
-		listPlayer:      player,
+		listPlayer:      listPlayer,
 		recorder:        recorder,
 		playlists:       playlists,
 		streamMediaList: streamMediaList,
@@ -162,7 +168,38 @@ func New(playlistDir string) (*Sampler, error) {
 }
 
 func (s *Sampler) Previous() error {
-	err := s.listPlayer.PlayPrevious()
+	pl, err := s.listPlayer.Player()
+	if err != nil {
+		return fmt.Errorf("failed to get player: %w", err)
+	}
+
+	m, err := pl.Media()
+	if err != nil {
+		return fmt.Errorf("failed to get media: %w", err)
+	}
+
+	ml := s.listPlayer.MediaList()
+
+	i, err := ml.IndexOfMedia(m)
+	if err != nil {
+		return fmt.Errorf("failed to get index of media: %w", err)
+	}
+
+	n, err := ml.Count()
+	if err != nil {
+		return fmt.Errorf("failed to get media list count: %w", err)
+	}
+
+	if i == 0 {
+		err := s.listPlayer.PlayAtIndex(uint(n - 1))
+		if err != nil {
+			return fmt.Errorf("failed to play last media: %w", err)
+		}
+
+		return nil
+	}
+
+	err = s.listPlayer.PlayPrevious()
 	if err != nil {
 		return fmt.Errorf("failed to play previous media: %w", err)
 	}
@@ -171,7 +208,38 @@ func (s *Sampler) Previous() error {
 }
 
 func (s *Sampler) Next() error {
-	err := s.listPlayer.PlayNext()
+	pl, err := s.listPlayer.Player()
+	if err != nil {
+		return fmt.Errorf("failed to get player: %w", err)
+	}
+
+	m, err := pl.Media()
+	if err != nil {
+		return fmt.Errorf("failed to get media: %w", err)
+	}
+
+	ml := s.listPlayer.MediaList()
+
+	i, err := ml.IndexOfMedia(m)
+	if err != nil {
+		return fmt.Errorf("failed to get index of media: %w", err)
+	}
+
+	n, err := ml.Count()
+	if err != nil {
+		return fmt.Errorf("failed to get media list count: %w", err)
+	}
+
+	if i == n-1 {
+		err := s.listPlayer.PlayAtIndex(0)
+		if err != nil {
+			return fmt.Errorf("failed to play first media: %w", err)
+		}
+
+		return nil
+	}
+
+	err = s.listPlayer.PlayNext()
 	if err != nil {
 		return fmt.Errorf("failed to play next media: %w", err)
 	}
@@ -196,6 +264,25 @@ func (s *Sampler) playStreamList() error {
 			zap.S().Errorw("failed to play media", "index", i, err)
 
 			continue
+		}
+
+		pl, err := s.listPlayer.Player()
+		if err != nil {
+			return fmt.Errorf("failed to get player: %w", err)
+		}
+
+		err = pl.SetScale(0)
+		if err != nil {
+			return fmt.Errorf("failed to set scale: %w", err)
+		}
+
+		const full = false
+
+		if full {
+			err = pl.SetFullScreen(true)
+			if err != nil {
+				return fmt.Errorf("failed to set fullscreen: %w", err)
+			}
 		}
 
 		break
@@ -249,11 +336,6 @@ func (s *Sampler) playPlaylist(i int) error {
 		return fmt.Errorf("failed to get media list from playlist media: %w", err)
 	}
 
-	err = s.listPlayer.SetPlaybackMode(vlc.Loop)
-	if err != nil {
-		return fmt.Errorf("failed to set playback mode: %w", err)
-	}
-
 	err = s.listPlayer.SetMediaList(ml)
 	if err != nil {
 		return fmt.Errorf("failed to set media: %w", err)
@@ -262,12 +344,12 @@ func (s *Sampler) playPlaylist(i int) error {
 	if !s.listPlayer.IsPlaying() {
 		err = s.listPlayer.Play()
 		if err != nil {
-			return fmt.Errorf("failed to play media: %w", err)
+			return fmt.Errorf("failed to play playlist %q: %w", s.playlists[i], err)
 		}
 	} else {
 		err = s.listPlayer.PlayAtIndex(0)
 		if err != nil {
-			return fmt.Errorf("failed to play media: %w", err)
+			return fmt.Errorf("failed to play media 0 in %q: %w", s.playlists[i], err)
 		}
 	}
 
@@ -435,17 +517,21 @@ func (s *Sampler) ToggleMode() error {
 
 var errTimeout = errors.New("timeout")
 
+type UI interface {
+	SendText(string)
+}
+
 type Controller struct {
 	sampler *Sampler
-	hud     *hud.Hud
+	ui      UI
 
 	playlistModifier bool
 }
 
-func NewController(svc *Sampler, hud *hud.Hud) (*Controller, error) {
+func NewController(svc *Sampler, ui UI) (*Controller, error) {
 	c := &Controller{
 		sampler: svc,
-		hud:     hud,
+		ui:      ui,
 	}
 
 	return c, nil

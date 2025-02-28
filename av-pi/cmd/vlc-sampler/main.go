@@ -401,16 +401,17 @@ func (s *avSampler) ToggleMode() error {
 var errTimeout = errors.New("timeout")
 
 func run(ctx context.Context) error {
-	err := os.MkdirAll("/tmp/recs", 0755)
+	err := vlc.Init("--quiet")
 	if err != nil {
-		return fmt.Errorf("failed to create directory: %w", err)
-	}
-
-	if err := vlc.Init("--quiet"); err != nil {
 		return fmt.Errorf("failed to initialize libvlc: %w", err)
 	}
 
 	defer vlc.Release()
+
+	err = os.MkdirAll("/tmp/recs", 0755)
+	if err != nil {
+		return fmt.Errorf("failed to create directory: %w", err)
+	}
 
 	av, err := newAVSampler("/home/markus/Playlists")
 	if err != nil {

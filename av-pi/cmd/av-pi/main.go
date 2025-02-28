@@ -2,26 +2,51 @@ package main
 
 import (
 	"context"
+	"flag"
 	"fmt"
 	"log"
 	"os"
 	"path"
 	"time"
 
+	vlc "github.com/adrg/libvlc-go/v3"
 	"github.com/kenshaw/evdev"
 	"gitlab.com/gomidi/midi/v2/drivers/rtmididrv"
 	"go.uber.org/zap"
 
+	"github.com/markus-wa/vlc-sampler/features/cliui"
 	"github.com/markus-wa/vlc-sampler/features/hud"
 	"github.com/markus-wa/vlc-sampler/features/input"
 	"github.com/markus-wa/vlc-sampler/features/midictl"
 	"github.com/markus-wa/vlc-sampler/features/sampler"
 )
 
+type UI interface {
+	SendText(string)
+	Start()
+}
+
+var uiFlag = flag.String("ui", "cli", "UI to use (cli, hud)")
+
 func run() error {
-	theHud, err := hud.NewHud()
+	err := vlc.Init("--no-autoscale")
 	if err != nil {
-		return fmt.Errorf("could not initialize HUD: %w", err)
+		return fmt.Errorf("failed to initialize libvlc: %w", err)
+	}
+
+	defer vlc.Release()
+
+	var ui UI
+
+	switch *uiFlag {
+	case "cli":
+		ui = cliui.UI{}
+
+	case "hud":
+		ui, err = hud.NewHud()
+
+	default:
+		return fmt.Errorf("unknown UI: %s", *uiFlag)
 	}
 
 	drv, err := rtmididrv.New()
@@ -45,7 +70,7 @@ func run() error {
 	}
 	defer midiSvc.Close()
 
-	midiCtl, err := midictl.NewController(midiSvc, theHud)
+	midiCtl, err := midictl.NewController(midiSvc, ui)
 	if err != nil {
 		return fmt.Errorf("could not initialize MIDI controller: %w", err)
 	}
@@ -60,15 +85,26 @@ func run() error {
 		return fmt.Errorf("could not initialize sampler: %w", err)
 	}
 
-	samplerCtrl, err := sampler.NewController(smplr, theHud)
+	samplerCtrl, err := sampler.NewController(smplr, ui)
 	if err != nil {
 		return fmt.Errorf("could not initialize sampler controller: %w", err)
 	}
 
+	go ui.Start()
+
 	ctx := context.Background()
 
-	mode := 0
+	for range time.Tick(time.Second) {
+		err := pollDefaultGamepad(ctx, samplerCtrl, midiCtl, ui)
+		if err != nil {
+			zap.S().Errorw("pollDefaultGamepad failed", err)
+		}
+	}
 
+	return nil
+}
+
+func pollDefaultGamepad(ctx context.Context, samplerCtrl *sampler.Controller, midiCtl *midictl.Controller, ui UI) error {
 	gamepad, err := input.PollDefault(ctx)
 	if err != nil {
 		return fmt.Errorf("failed to poll device: %w", err)
@@ -78,6 +114,7 @@ func run() error {
 
 	fmt.Printf("Device Name: %s\n", gamepad.Name())
 
+	mode := 0
 	modeModifier := false
 
 	for event := range gamepad.Poll(ctx) {
@@ -85,7 +122,7 @@ func run() error {
 			continue
 		}
 
-		fmt.Println(event.Type, event.Code, event.Value)
+		ui.SendText(fmt.Sprintf("%s (%d) %d", event.Type, event.Code, event.Value))
 
 		if modeModifier && event.Type == evdev.BtnMode && event.Value != 0 {
 			mode++
@@ -101,13 +138,13 @@ func run() error {
 
 		switch mode % 2 {
 		case 0:
-			err := midiCtl.HandleEvent(event)
+			err := samplerCtrl.HandleEvent(event)
 			if err != nil {
 				log.Println("failed to handle event:", err)
 			}
 
 		case 1:
-			err := samplerCtrl.HandleEvent(event)
+			err := midiCtl.HandleEvent(event)
 			if err != nil {
 				log.Println("failed to handle event:", err)
 			}
@@ -118,6 +155,8 @@ func run() error {
 }
 
 func main() {
+	flag.Parse()
+
 	logger, err := zap.NewDevelopment()
 	if err != nil {
 		log.Fatalf("could not initialize logger: %v", err)
@@ -127,9 +166,7 @@ func main() {
 
 	zap.ReplaceGlobals(logger)
 
-	t := time.NewTicker(1 * time.Second)
-
-	for range t.C {
+	for range time.Tick(1 * time.Second) {
 		err := run()
 		if err != nil {
 			zap.S().Errorw("run failed", "error", err)
