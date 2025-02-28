@@ -87,7 +87,7 @@ func run() error {
 
 		fmt.Println(event.Type, event.Code, event.Value)
 
-		if modeModifier && event.Type == evdev.BtnMode {
+		if modeModifier && event.Type == evdev.BtnMode && event.Value != 0 {
 			mode++
 
 			continue
