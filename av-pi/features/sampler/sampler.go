@@ -20,8 +20,8 @@ import (
 type Mode int
 
 const (
-	ModePlaylists Mode = iota
-	ModeScreen
+	ModeScreen Mode = iota
+	ModePlaylists
 	ModeMax
 )
 
@@ -182,6 +182,10 @@ func (s *Sampler) Next() error {
 }
 
 func (s *Sampler) playPlaylist(i int) error {
+	if i >= len(s.playlists) {
+		return fmt.Errorf("playlist %d doesn't exist", i)
+	}
+
 	log.Println("starting", s.playlists[i])
 
 	m, err := vlc.NewMediaFromPath(s.playlists[i])
@@ -387,12 +391,6 @@ func (s *Sampler) ToggleMode() error {
 	}
 
 	switch s.mode {
-	case ModePlaylists:
-		err := s.playPlaylist(s.currentListIndex)
-		if err != nil {
-			return fmt.Errorf("failed to play playlist: %w", err)
-		}
-
 	case ModeScreen:
 		err := s.listPlayer.SetMediaList(s.streamMediaList)
 		if err != nil {
@@ -413,6 +411,12 @@ func (s *Sampler) ToggleMode() error {
 			}
 
 			break
+		}
+
+	case ModePlaylists:
+		err := s.playPlaylist(s.currentListIndex)
+		if err != nil {
+			return fmt.Errorf("failed to play playlist: %w", err)
 		}
 
 	default:
