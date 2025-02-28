@@ -12,6 +12,7 @@ import (
 	vlc "github.com/adrg/libvlc-go/v3"
 	"github.com/kenshaw/evdev"
 	"github.com/vladimirvivien/go4vl/device"
+	"go.uber.org/zap"
 
 	"github.com/markus-wa/vlc-sampler/features/hud"
 )
@@ -393,9 +394,20 @@ func (s *Sampler) ToggleMode() error {
 			return fmt.Errorf("failed to set media list: %w", err)
 		}
 
-		err = s.listPlayer.PlayAtIndex(0)
+		n, err := s.streamMediaList.Count()
 		if err != nil {
-			return fmt.Errorf("failed to play stream media list: %w", err)
+			return fmt.Errorf("failed to get media list count: %w", err)
+		}
+
+		for i := 0; i < n; i++ {
+			err = s.listPlayer.PlayAtIndex(uint(i))
+			if err != nil {
+				zap.S().Errorw("failed to play media", "index", i, err)
+
+				continue
+			}
+
+			break
 		}
 
 	default:
@@ -434,42 +446,42 @@ func (c *Controller) HandleEvent(event *evdev.EventEnvelope) error {
 		if c.playlistModifier {
 			err := c.sampler.PreviousPlaylist()
 			if err != nil {
-				return fmt.Errorf("failed to change MIDI port: %w", err)
+				return fmt.Errorf("failed to play previous playlist: %w", err)
 			}
 		} else {
 			err := c.sampler.Previous()
 			if err != nil {
-				return fmt.Errorf("failed to change MIDI port: %w", err)
+				return fmt.Errorf("failed to play previous media %w", err)
 			}
 		}
 	} else if event.Type == evdev.BtnStart && event.Value == 1 {
 		if c.playlistModifier {
 			err := c.sampler.NextPlaylist()
 			if err != nil {
-				return fmt.Errorf("failed to change MIDI port: %w", err)
+				return fmt.Errorf("failed to play next playlist: %w", err)
 			}
 		} else {
 			err := c.sampler.Next()
 			if err != nil {
-				return fmt.Errorf("failed to change MIDI port: %w", err)
+				return fmt.Errorf("failed to play next media: %w", err)
 			}
 		}
 	} else if event.Type == evdev.BtnStart && event.Value == 1 {
 		err := c.sampler.TogglePlayPause()
 		if err != nil {
-			return fmt.Errorf("failed to change MIDI port: %w", err)
+			return fmt.Errorf("failed to toggle play/pause: %w", err)
 		}
 	} else if event.Type == evdev.BtnSelect && event.Value == 1 {
 		err := c.sampler.ToggleRecording()
 		if err != nil {
-			return fmt.Errorf("failed to change MIDI port: %w", err)
+			return fmt.Errorf("failed to toggle recording: %w", err)
 		}
 	} else if event.Type == evdev.BtnZ {
 		c.playlistModifier = event.Value == 1
 	} else if event.Type == evdev.BtnMode {
 		err := c.sampler.ToggleMode()
 		if err != nil {
-			return fmt.Errorf("failed to change MIDI port: %w", err)
+			return fmt.Errorf("failed to toggle mode: %w", err)
 		}
 	}
 
