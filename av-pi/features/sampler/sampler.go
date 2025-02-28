@@ -487,7 +487,7 @@ func (c *Controller) HandleEvent(event *evdev.EventEnvelope) error {
 		}
 	} else if event.Type == evdev.BtnZ {
 		c.playlistModifier = event.Value == 1
-	} else if event.Type == evdev.BtnMode {
+	} else if event.Type == evdev.BtnMode && event.Value == 1 {
 		err := c.sampler.ToggleMode()
 		if err != nil {
 			return fmt.Errorf("failed to toggle mode: %w", err)
