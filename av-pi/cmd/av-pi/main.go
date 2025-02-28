@@ -90,7 +90,7 @@ func run() error {
 		if modeModifier && event.Type == evdev.BtnMode && event.Value != 0 {
 			mode++
 
-			log.Println("mode changed to", mode)
+			log.Println("mode changed to", mode%2)
 
 			continue
 		}
