@@ -18,7 +18,7 @@ import (
 type Mode int
 
 const (
-	ModeScreen Mode = iota
+	ModeStream Mode = iota
 	ModePlaylists
 	ModeMax
 )
@@ -496,7 +496,7 @@ func (s *Sampler) ToggleMode() error {
 	}
 
 	switch s.mode {
-	case ModeScreen:
+	case ModeStream:
 		err := s.playStreamList()
 		if err != nil {
 			return fmt.Errorf("failed to play stream list: %w", err)

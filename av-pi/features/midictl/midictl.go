@@ -27,19 +27,15 @@ type Service struct {
 func NewService() (*Service, error) {
 	svc := &Service{}
 
-	idx := slices.IndexFunc(midi.GetOutPorts(), func(o drivers.Out) bool {
-		return strings.Contains(o.String(), "CH345")
-	})
-
-	err := svc.openMidiPort(idx)
+	err := svc.openDefaultPort()
 	if err != nil {
-		return nil, fmt.Errorf("failed to open MIDI port %d: %w", idx, err)
+		return nil, fmt.Errorf("failed to open default MIDI port: %w", err)
 	}
 
 	return svc, nil
 }
 
-func (s *Service) openMidiPort(i int) error {
+func (s *Service) openPort(i int) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 
@@ -72,6 +68,19 @@ func (s *Service) openMidiPort(i int) error {
 
 	if err != nil {
 		return fmt.Errorf("failed to close old MIDI port: %w", err)
+	}
+
+	return nil
+}
+
+func (s *Service) openDefaultPort() error {
+	idx := slices.IndexFunc(midi.GetOutPorts(), func(o drivers.Out) bool {
+		return strings.Contains(o.String(), "CH345")
+	})
+
+	err := s.openPort(idx)
+	if err != nil {
+		return fmt.Errorf("failed to open MIDI port %d: %w", idx, err)
 	}
 
 	return nil
@@ -135,11 +144,11 @@ func (s *Service) Gate(ch uint8, on bool) error {
 }
 
 func (s *Service) previousPort() error {
-	return s.openMidiPort(s.portIdx - 1)
+	return s.openPort(s.portIdx - 1)
 }
 
 func (s *Service) nextPort() error {
-	return s.openMidiPort(s.portIdx + 1)
+	return s.openPort(s.portIdx + 1)
 }
 
 func (s *Service) Close() error {
@@ -285,8 +294,13 @@ func (c *Controller) HandleEvent(event *evdev.EventEnvelope) error {
 		} else {
 			c.incStepSize()
 		}
-	} else if event.Type == evdev.BtnZ {
-		c.midiPortModifier = event.Value == 1
+	} else if event.Type == evdev.BtnZ || event.Type == evdev.AbsoluteZ {
+		c.midiPortModifier = event.Value != 0
+	} else if event.Type == evdev.BtnMode && event.Value != 0 {
+		err := c.svc.openDefaultPort()
+		if err != nil {
+			return fmt.Errorf("failed to open default MIDI port: %w", err)
+		}
 	}
 
 	// gates
