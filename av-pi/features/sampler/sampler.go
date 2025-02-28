@@ -90,6 +90,11 @@ func New(playlistDir string) (*Sampler, error) {
 		return nil, fmt.Errorf("failed to get media from screen: %w", err)
 	}
 
+	err = screenMedia.AddOptions(":sout=#transcode{vcodec=mpeg4,acodec=mpga}:display", ":sout-keep")
+	if err != nil {
+		return nil, fmt.Errorf("failed to add options: %w", err)
+	}
+
 	streamMediaList, err := vlc.NewMediaList()
 	if err != nil {
 		return nil, fmt.Errorf("failed to create media list: %w", err)
@@ -130,7 +135,7 @@ func New(playlistDir string) (*Sampler, error) {
 			return nil, fmt.Errorf("failed to get media from screen: %w", err)
 		}
 
-		err = devMedia.AddOptions(":v4l2-fps=30", ":v4l2-width=640", ":v4l2-height=480", ":live-caching=40")
+		err = devMedia.AddOptions(":v4l2-fps=30", ":v4l2-width=640", ":v4l2-height=480", ":live-caching=40", ":sout=#transcode{vcodec=mpeg4,acodec=mpga}:display", ":sout-keep")
 		if err != nil {
 			return nil, fmt.Errorf("failed to add options: %w", err)
 		}
