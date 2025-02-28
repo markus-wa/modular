@@ -449,8 +449,6 @@ func (c *Controller) HandleEvent(event *evdev.EventEnvelope) error {
 		return nil
 	}
 
-	fmt.Println(event.Type, event.Code, event.Value)
-
 	if event.Type == evdev.BtnSelect && event.Value == 1 {
 		if c.playlistModifier {
 			err := c.sampler.PreviousPlaylist()
